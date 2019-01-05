@@ -4,6 +4,8 @@
 
 call plug#begin('~/.vim/vim-plugged')
 
+" move line down and up
+Plug 'matze/vim-move' | Plug '~/.vim/customs/vim-move-m'
 " general syntax support
 "Plug 'sheerun/vim-polyglot'
 
@@ -15,7 +17,7 @@ call plug#begin('~/.vim/vim-plugged')
 
 "Plug 'vheon/vim-cursormode'
 
-Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' | Plug '~/.vim/customs/vim-airline'
+Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' | Plug '~/.vim/customs/vim-airline-m'
 " Plug 'itchyny/lightline.vim'
 
 "Plug 'romainl/vim-qf'
@@ -89,7 +91,7 @@ Plug 'junegunn/rainbow_parentheses.vim'
 " add some like viga=<CR> function
 "Plug 'junegunn/vim-easy-align'
 
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/nerdtree-m'
 
 " snippets {{{
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -107,7 +109,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 " completion {{{
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
   \ | Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-  \ | Plug '~/.vim/customs/deoplete'
+  \ | Plug '~/.vim/customs/deoplete-m'
 if !has('nvim')
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
@@ -136,7 +138,7 @@ set number
 "}}}
 
 " linter ale
-Plug 'w0rp/ale' | Plug '~/.vim/customs/ale'
+Plug 'w0rp/ale' | Plug '~/.vim/customs/ale-m'
 
 " colorscheme {{{
 Plug 'junegunn/seoul256.vim'
@@ -147,37 +149,36 @@ let g:seoul256_background = 233
 "}}}
 
 " lengthmatters: highlight the flooding art of an overly long line
-Plug 'whatyouhide/vim-lengthmatters' | Plug '~/.vim/customs/vim-lengthmatters'
+Plug 'whatyouhide/vim-lengthmatters' | Plug '~/.vim/customs/vim-lengthmatters-m'
 
 " easymotion, <leader><leader>f like function
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'haya14busa/incsearch.vim'
-Plug '~/.vim/customs/vim-easymotion'
+Plug '~/.vim/customs/vim-easymotion-m'
 
 " vim-anzu: display search status
-"Plug 'osyo-manga/vim-anzu' | Plug '~/.vim/customs/vim-anzu'
+"Plug 'osyo-manga/vim-anzu' | Plug '~/.vim/customs/vim-anzu-m'
 
 " fancy fold texts
-Plug 'Konfekt/FoldText' | Plug '~/.vim/customs/FoldText'
+Plug 'Konfekt/FoldText' | Plug '~/.vim/customs/FoldText-m'
 
 " fzf
-Plug '~/.fzf'| Plug 'junegunn/fzf.vim'| Plug '~/.vim/customs/fzf'
+Plug '~/.fzf'| Plug 'junegunn/fzf.vim'| Plug '~/.vim/customs/fzf-m'
 
 " leader-f
 " an asynchronous fuzzy finder which is used to quickly locate files, buffers, mrus, tags, etc. in large project
-"Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } | Plug 'Yggdroot/LeaderF-marks' | Plug '~/.vim/customs/LeaderF'
+"Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } | Plug 'Yggdroot/LeaderF-marks' | Plug '~/.vim/customs/LeaderF-m'
 
 " undotreee
-Plug 'mbbill/undotree' | Plug '~/.vim/customs/undotree'
+Plug 'mbbill/undotree' | Plug '~/.vim/customs/undotree-m'
 
 "Plug 'Glench/Vim-Jinja2-Syntax'
 
 Plug 'tmux-plugins/vim-tmux'
 
 " vim tmux navigator
-Plug 'christoomey/vim-tmux-navigator' | Plug '~/.vim/customs/vim-tmux-navigator'
-
+Plug 'christoomey/vim-tmux-navigator' | Plug '~/.vim/customs/vim-tmux-navigator-m'
 " add/del/chagne surround like "/[/]/</>
 Plug 'tpope/vim-surround'
 
@@ -203,7 +204,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-dotenv'
 
 " directory viewer for vim
-Plug 'justinmk/vim-dirvish' | Plug '~/.vim/customs/vim-dirvish'
+Plug 'justinmk/vim-dirvish' | Plug '~/.vim/customs/vim-dirvish-m'
 
 " project configuration
 Plug 'tpope/vim-projectionist'
@@ -228,13 +229,13 @@ Plug 'fsharpasharp/vim-dirvinist'
 Plug 'WolfgangMehner/bash-support', {'for': 'sh'}
 
 " python {{{
-Plug 'python-mode/python-mode', { 'for' : 'python' , 'branch': 'develop'} | Plug '~/.vim/customs/python-mode'
+Plug 'python-mode/python-mode', { 'for' : 'python' , 'branch': 'develop'} | Plug '~/.vim/customs/python-mode-m'
 
 
 Plug 'vim-python/python-syntax', {'for': 'python'}
 
 " conda support
-Plug 'cjrh/vim-conda'| Plug '~/.vim/customs/vim-conda'
+Plug 'cjrh/vim-conda'| Plug '~/.vim/customs/vim-conda-m'
 
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}
 " }}}
@@ -258,8 +259,6 @@ Plug 'tmux-plugins/vim-tmux'
 " dockerfile syntax support and snippets for dockerfile
 "Plug 'ekalinin/Dockerfile.vim'
 
-" move line down and up
-Plug 'matze/vim-move' | Plug '~/.vim/customs/vim-mode'
 
 call plug#end()
 
