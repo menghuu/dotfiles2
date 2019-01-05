@@ -12,6 +12,7 @@
 - bash, 我尽量使用通用的shell而不是bash脚本来管理
 - wget/curl，这是为了安装中文的vim手册, 以及 fzf
 - tmux，强烈建议安装，但是也不是强制的
+- vim/nvim，需要python支持
 
 # features
 

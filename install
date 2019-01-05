@@ -50,7 +50,7 @@ not_backup=${not_backup:-false}
 debug=${debug:-false}
 
 install_dir=${install_dir:-"$HOME"}
-backup_dir=${backup_dir:-"${nstall_dir}/.backups"}
+backup_dir=${backup_dir:-"${install_dir}/.backups"}
 source_dir=${source_dir:-"${this_script_dir}"}
 
 backup_dir=$(realpath ${backup_dir})
@@ -66,59 +66,117 @@ if ${verbose}; then
    echo "========================="
 fi
 
+function append_line() {
+  set -e
+
+  local update line file pat lno
+  update="$1"
+  line="$2"
+  file="$3"
+  pat="${4:-}"
+  lno=""
+
+  echo "Update $file:"
+  echo "  - $line"
+  if [ -f "$file" ]; then
+    if [ $# -lt 4 ]; then
+      lno=$(\grep -nF "$line" "$file" | sed 's/:.*//' | tr '\n' ' ')
+    else
+      lno=$(\grep -nF "$pat" "$file" | sed 's/:.*//' | tr '\n' ' ')
+    fi
+  fi
+  if [ -n "$lno" ]; then
+    echo "    - Already exists: line #$lno"
+  else
+    if [ $update -eq 1 ]; then
+      [ -f "$file" ] && echo >> "$file"
+      echo "$line" >> "$file"
+      echo "    + Added"
+    else
+      echo "    ~ Skipped"
+    fi
+  fi
+  echo
+  set +e
+}
+
 function hm_backup() {
   # test if a link
-  should_mv=$1
-  backup_file_path="${backup_dir}/${should_mv}"
-  if [ ! -e "${should_mv}" ]; then
-    ${verbose} && echo "    ${should_mv} not exist"
-    exit 0
-  fi
-  if [ -L "${should_mv}" ]; then
-    "${verbose}" && echo "    mv link ${should_mv} to ${backup_file_path}"
-    real_link="$(realpath ${should_mv})"
-    ln -s ${real_link} "${backup_file_path}"
+  local from_path="$1"
+  local file_name="$(basename ${from_path})"
+  local dest_dir="$2"
+  local dest_path="${dest_dir}/${file_name}"
+  local verbose="$3"
+  if [ ! -e "${from_path}" ]; then
+    #${verbose} && echo "    ${from_path} not exist" && true
+    true
+  elif [ -L "${from_path}" ]; then
+    ${verbose} && echo "    back link ${from_path} to ${dest_path}"
+    real_path="$(realpath ${from_path})"
+    ln -sf ${real_path} "${dest_path}"
   else
-    "${verbose}" && echo "mv file/dir ${should_mv} to ${backup_file_path}"
-    mv -f -r "${should_mv}" "${backup_file_path}"
+    "${verbose}" && echo "    mv file/dir ${from_path} to ${dest_path}"
+    mv -f "${from_path}" "${dest_path}"
   fi
 }
 
-echo "link file in ${source_dir}/dotfiles excluding .config"
-for file_name in $(ls -1A "${source_dir}/dotfiles"); do
-  if [ file_name = '.config' ]; then
-    # the ~/.config dir should be handled in other way
-    continue
-  fi
-  file_path="${source_dir}/dotfiles/${file_name}"
-  backup_path="${backup_dir}/${file_name}"
-  install_path="${install_dir}/${file_name}"
-  if ! "${not_backup}"; then
-    hm_backup ${install_path}
-  fi
-  ln -s -f "${file_path}" "${install_path}"
-  if "${verbose}"; then
-  echo -n "  $(tput setaf 2)link ${install_path} --> ${file_path}\tsuccess$(tput sgr 0)"
-  fi
-done
+function elementIn() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
 
-echo "link file in ${source_dir}/dotfiles/.config"
-mkdir -p "${install_dir}/.config"
-mkdir -p "${backup_dir}/.config"
-for file_name in $(ls -1A "${source_dir}/dotfiles/.config"); do
-  file_path="${source_dir}/dotfiles/.config/${file_name}"
-  backup_path="${backup_dir}/.config/${file_name}"
-  install_path="${install_dir}/.config/${file_name}"
-  if ! "${not_backup}"; then
-    hm_backup ${install_path}
-  fi
-  ln -s -f "${file_path}" "${install_path}"
-  if "${verbose}"; then
-  echo -n "  $(tput setaf 2)link ${install_path} --> ${file_path}\tsuccess$(tput sgr 0)"
-  fi
-done
+function hm_link(){
+  local base_dir dest_dir backup_dir not_backup verbose exclude_names
+  local from_path backup_path dest_path
+  base_dir=${1}
+  dest_dir=${2}
+  backup_dir=${3}
+  not_backup=${4}
+  verbose=${5}
+  shift
+  shift
+  shift
+  shift
+  shift
+  exclude_names="$@"
+  [ ! -e ${base_dir} ] && mkdir -p ${base_dir}
+  [ ! -e ${dest_dir} ] && mkdir -p ${dest_dir}
+  [ ! -e ${backup_dir} ] && mkdir -p ${backup_dir}
+  for file_name in $(ls -1A "${base_dir}"); do
+    if elementIn "${file_name}" ${exclude_names[@]}; then
+      ${verbose} && echo "  ${file_name} is excluded"
+      continue
+    fi
+    echo "  do with ${file_name}"
+    from_path="${base_dir}/${file_name}"
+    backup_path="${backup_dir}/${file_name}"
+    dest_path="${dest_dir}/${file_name}"
+    if ! "${not_backup}"; then
+      hm_backup "${dest_path}" "${backup_dir}" ${verbose}
+      #echo "  backup ${dest_path} success"
+    fi
+    ${verbose} && echo -e "    $(tput setaf 2)link ${dest_path} --> ${from_path}\tsuccess$(tput sgr 0)"
+    ln -s -f "${from_path}" "${dest_path}"
+  done
+}
 
-echo "install vim chinese document"
+#===============================================================================
+echo "$(tput setaf 3)link file in ${source_dir}/dotfiles excluding .config$(tput sgr 0)"
+hm_link "${source_dir}/dotfiles" "${install_dir}" "${backup_dir}" \
+    ${not_backup} ${verbose} ".config" ".local"
+
+
+#===============================================================================
+echo "$(tput setaf 3)link file in ${source_dir}/dotfiles/.config$(tput sgr 0)"
+hm_link "${source_dir}/dotfiles/.config" "${install_dir}/.config" \
+    "${backup_dir}/.config" ${not_backup} ${verbose}
+
+
+#===============================================================================
+
+#===============================================================================
+echo "$(tput setaf 3)install vim chinese document$(tput sgr 0)"
 tmp_dir=$(mktemp -d)
 install_vimcdoc=${install_vimcdoc:-true}
 
@@ -126,18 +184,33 @@ ${verbose} && echo "mkdir temp dir ${tmp_dir}"
 
 ${install_vimcdoc} && \
 (
-  command -v wget > /dev/null && (${verbose} && echo "$(tput setaf 3)find wget, using wget to download vimcdoc" || true) && wget -q -O "${tmp_dir}/vimcdoc.tar.gz" ${vimcdoc_url} \
-  || (command -v curl > /dev/null && (${verbose} && echo "$(tput setaf 3)find wget, using curl to download vimcdoc" || true) && curl -L -s -o "${tmp_dir}/vimcdoc.tar.gz" ${vimcdoc_url})\
-  || (echo "cannot find wget and curl, stop install this document" && install_vimcdoc=false)
+  (command -v curl > /dev/null \
+      && (${verbose} && echo "$(tput setaf 3)find curl, using curl to download vimcdoc" || true) \
+	  && curl -L -s -o "${tmp_dir}/vimcdoc.tar.gz" ${vimcdoc_url})\
+  || (echo "cannot find curl, stop install this document" && install_vimcdoc=false)
 )
 
-${install_vimcdoc} && tar -xzf "${tmp_dir}/vimcdoc.tar.gz" -C "${tmp_dir}" && (cd $(find ${tmp_dir} -maxdepth 1 -type d -name 'vimcdoc*') && sh ./vimcdoc.sh -i > /dev/null) && echo "$(tput setaf 2)install vimcdoc successfully"
+${install_vimcdoc} && tar -xzf "${tmp_dir}/vimcdoc.tar.gz" -C "${tmp_dir}" \
+    && (cd $(find ${tmp_dir} -maxdepth 1 -type d -name 'vimcdoc*') \
+    && sh ./vimcdoc.sh -i > /dev/null) \
+    && echo "$(tput setaf 2)install vimcdoc successfully"
 rm -fr ${tmp_dir}
 
 
-echo "install autojump$"
-(cd ${this_script_dir} && ./install.py)
+#===============================================================================
+echo "$(tput setaf 3)install autojump$(tput sgr 0)"
+(cd ${this_script_dir}/vendor/autojump && ./install.py)
+
+
+#===============================================================================
+echo "$(tput setaf 3)install vim-plug$(tput sgr 0)"
+[ ! -e "${HOME}/.vim/autoload/plug.vim" ] \
+&& (${verbose} && echo "$(tput setaf 3) download vim-plug$(tput sgr 0)" || true)\
+  && curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubsercontent.com/junegunn/vim-plug/master/plug.vim
 
 
 
+#===============================================================================
+echo "$(tput setaf 3)optional: below things are suggested$(tput sgr 0)"
 (!(command -v tmux > /dev/null)) && echo "$(tput setaf 1)should install tmux manually$(tput sgr 0)"
