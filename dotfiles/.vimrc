@@ -12,7 +12,6 @@ call plug#begin('~/.vim/vim-plugged')
 
 " will configure latter
 "Plug 'skywind3000/asyncrun.vim'
-"call s:load_my_config('for_asyncrun.vim')
 
 "Plug 'vheon/vim-cursormode'
 
@@ -85,12 +84,10 @@ Plug 'junegunn/rainbow_parentheses.vim'
 
 " swap window without break windows size
 "Plug 'wesQ3/vim-windowswap'
-"call s:load_my_config('for_vim_windowswap.vim')
 
 " vim easy align
 " add some like viga=<CR> function
 "Plug 'junegunn/vim-easy-align'
-"call s:load_my_config('for_vim_easy_align.vim')
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/nerdtree'
 
@@ -123,7 +120,6 @@ endif
     " \'for': ['python'],
     " \'do': function('InstallJediDeps')
     " \}
-"call s:load_my_config('for_jedi.vim')
 "}}}
 
 " commenter {{{
@@ -136,7 +132,6 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'jeffkreeftmeijer/vim-numbertoggle'
 "Plug 'myusuf3/numbers.vim'
 "Plug 'kennykaye/vim-relativity'
-"call s:load_my_config('for_vim_relativity.vim')
 set number
 "}}}
 
@@ -146,24 +141,22 @@ Plug 'w0rp/ale' | Plug '~/.vim/customs/ale'
 " colorscheme {{{
 Plug 'junegunn/seoul256.vim'
 "Plug 'chriskempson/base16-vim'
-
 " for dark 233(darkest) ~ 239(lightest)
 " for light 253(darkest) ~ 256(lightest)
 let g:seoul256_background = 233
-colo seoul256
 "}}}
 
 " lengthmatters: highlight the flooding art of an overly long line
-Plug 'whatyouhide/vim-lengthmatters' | Plug "~/.vim/customs/vim-lengthmatters"
+Plug 'whatyouhide/vim-lengthmatters' | Plug '~/.vim/customs/vim-lengthmatters'
 
 " easymotion, <leader><leader>f like function
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'haya14busa/incsearch.vim'
-call s:load_my_config('for_easymotion_incsearch.vim')
+Plug '~/.vim/customs/vim-easymotion'
 
 " vim-anzu: display search status
-Plug 'osyo-manga/vim-anzu' | Plug '~/.vim/customs/vim-anzu'
+"Plug 'osyo-manga/vim-anzu' | Plug '~/.vim/customs/vim-anzu'
 
 " fancy fold texts
 Plug 'Konfekt/FoldText' | Plug '~/.vim/customs/FoldText'
@@ -173,20 +166,17 @@ Plug '~/.fzf'| Plug 'junegunn/fzf.vim'| Plug '~/.vim/customs/fzf'
 
 " leader-f
 " an asynchronous fuzzy finder which is used to quickly locate files, buffers, mrus, tags, etc. in large project
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-Plug 'Yggdroot/LeaderF-marks'
-call s:load_my_config('for_leaderf.vim')
+"Plug 'Yggdroot/LeaderF', { 'do': './install.sh' } | Plug 'Yggdroot/LeaderF-marks' | Plug '~/.vim/customs/LeaderF'
 
 " undotreee
-Plug 'mbbill/undotree'
-call s:load_my_config('for_undotree.vim')
+Plug 'mbbill/undotree' | Plug '~/.vim/customs/undotree'
 
 "Plug 'Glench/Vim-Jinja2-Syntax'
 
 Plug 'tmux-plugins/vim-tmux'
 
 " vim tmux navigator
-Plug 'christoomey/vim-tmux-navigator' | Plug "~/.vim/customs/vim-tmux-navigator"
+Plug 'christoomey/vim-tmux-navigator' | Plug '~/.vim/customs/vim-tmux-navigator'
 
 " add/del/chagne surround like "/[/]/</>
 Plug 'tpope/vim-surround'
@@ -244,8 +234,7 @@ Plug 'python-mode/python-mode', { 'for' : 'python' , 'branch': 'develop'} | Plug
 Plug 'vim-python/python-syntax', {'for': 'python'}
 
 " conda support
-" Plug 'cjrh/vim-conda'
-"call s:load_my_config('for_vim_conda.vim')
+Plug 'cjrh/vim-conda'| Plug '~/.vim/customs/vim-conda'
 
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}
 " }}}
@@ -360,3 +349,4 @@ if !has('nvim')
     set viminfo+=!
     set wildmenu
 endif
+colo seoul256

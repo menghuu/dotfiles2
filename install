@@ -57,6 +57,8 @@ backup_dir=$(realpath ${backup_dir})
 install_dir=$(realpath ${install_dir})
 source_dir=$(realpath ${source_dir})
 
+rm -fr ${backup_dir}
+
 if ${verbose}; then
    echo backup_dir is: "${backup_dir}"
    echo verbose is: "${verbose}"
