@@ -143,9 +143,7 @@ tags
 
 # End of https://www.gitignore.io/api/vim,python
 
-2
-跟踪器
-Facebook Connect
-Twitter Button
-Upgrade
-
+*.cnx
+vimcdoc.vim
+help_cn.vim
+dotfiles/.vim/doc/tags-cn
