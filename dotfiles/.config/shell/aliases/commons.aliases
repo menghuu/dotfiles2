@@ -1,0 +1,5 @@
+alias l="ls"
+alias ll='ls -lA'
+alias la='ls -la'
+alias lla='ls -la'
+alias cd..='cd ..'

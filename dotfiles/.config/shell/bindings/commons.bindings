@@ -1,0 +1,15 @@
+
+if [[ "$INSHELL" == 'bash' ]]; then
+  bind '"\e;":"ls -lA\n"'
+  bind '"\eu":"cd ..\n"'
+elif [[ "$INSHELL" == 'zsh' ]]; then
+  bindkey -s '\e;' 'ls -lA\n'
+  bindkey -s '\eu' 'cd ..\n'
+else
+  echo "not support SHELL($INSHELL)"
+  exit 1
+fi
+
+
+
+# vi: set filetype=sh :

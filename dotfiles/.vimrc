@@ -6,6 +6,9 @@ call plug#begin('~/.vim/vim-plugged')
 
 " move line down and up
 Plug 'matze/vim-move' | Plug '~/.vim/customs/vim-move-m'
+
+Plug 'aperezdc/vim-template'
+
 " general syntax support
 "Plug 'sheerun/vim-polyglot'
 

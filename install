@@ -136,11 +136,7 @@ function hm_link(){
   backup_dir=${3}
   not_backup=${4}
   verbose=${5}
-  shift
-  shift
-  shift
-  shift
-  shift
+  shift 5
   exclude_names="$@"
   [ ! -e ${base_dir} ] && mkdir -p ${base_dir}
   [ ! -e ${dest_dir} ] && mkdir -p ${dest_dir}
@@ -174,8 +170,6 @@ echo "$(tput setaf 3)link file in ${source_dir}/dotfiles/.config$(tput sgr 0)"
 hm_link "${source_dir}/dotfiles/.config" "${install_dir}/.config" \
     "${backup_dir}/.config" ${not_backup} ${verbose}
 
-
-#===============================================================================
 
 #===============================================================================
 echo "$(tput setaf 3)install vim chinese document$(tput sgr 0)"
@@ -212,6 +206,13 @@ echo "$(tput setaf 3)install vim-plug$(tput sgr 0)"
     https://raw.githubsercontent.com/junegunn/vim-plug/master/plug.vim
 
 
+#===============================================================================
+
+append_line $([ -e "$HOME/.bashrc" ] && echo 1 || echo 0) \
+  'source ${HOME}/.config/shell/rc.commons' "$HOME/.bashrc"
+
+append_line $([ -e "$HOME/.zshrc" ] && echo 1 echo 0) \
+  'source ${HOME}/.config/shell/rc.commons' '$HOME/.zshrc'
 
 #===============================================================================
 echo "$(tput setaf 3)optional: below things are suggested$(tput sgr 0)"

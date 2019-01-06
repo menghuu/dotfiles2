@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+INSHELL=$(sh -c 'ps -p $$ -o ppid=' | xargs ps -o cmd= -p)
+
+case $INSHELL in
+  *zsh*)
+    INSHELL='zsh'
+    ;;
+  *bash*)
+    INSHELL='bash'
+    ;;
+  sh)
+    INSHELL='sh'
+    echo "$(tput setaf 1)dot not support SHELL(${$INSHELL})$(tput sgr 0)"
+    exit 1
+    ;;
+  *)
+    echo "$(tput setaf 1)dot not support SHELL(${$INSHELL})$(tput sgr 0)"
+    exit 1
+    ;;
+esac
+
+this_script_dir="${HOME}/.config/shell/"
+
+#echo shell is ${INSHELL}
+#echo dir is ${this_script_dir}
+
+function get_exclude_suffixes() {
+  local sh_suffix=$1
+  local exclude_suffix=()
+  case ${sh_suffix} in
+    bash)
+      exclude_suffix+=( 'zsh' )
+      ;;
+    zsh)
+      exclude_suffix+=( 'bash' )
+      ;;
+    sh)
+      exclude_suffix+=( 'bash', 'zsh' )
+      ;;
+    *)
+      echo "not support ${sh_suffix}"
+      exit -1
+  esac
+  echo "${exclude_suffix}"
+}
+
+function elementIn() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
+function hm_source() {
+  local base_dir sh_suffix
+  base_dir=$1
+  sh_suffix=$2
+  shift 2
+  exclude_names="$@"
+  exclude_suffixes="$(get_exclude_suffixes ${sh_suffix})"
+  #echo exclude_suffixes is: ${exclude_suffixes}
+  #echo exclude_names is: ${exclude_names}
+
+  for file_path in $(find "${base_dir}" -maxdepth 1 -type f); do
+    for exclude_suffix in "$(echo ${exclude_suffixes})"; do
+      if [[ ! $(basename "${file_path}") =~ ".${exclude_suffix}" ]] \
+        && ! elementIn "$(basename ${file_path})" ${exclude_names[@]} ; then
+        . "${file_path}"
+      fi
+    done
+  done
+}
+
+# common setting
+
+# alias
+hm_source "${this_script_dir}/aliases" "${INSHELL}"
+
+# key bindings
+hm_source "${this_script_dir}/bindings" "${INSHELL}"
