@@ -207,12 +207,18 @@ echo "$(tput setaf 3)install vim-plug$(tput sgr 0)"
 
 
 #===============================================================================
-
+echo "$(tput setaf 3)append configure into shell rc$(tput sgr 0)"
 append_line $([ -e "$HOME/.bashrc" ] && echo 1 || echo 0) \
   'source ${HOME}/.config/shell/rc.commons' "$HOME/.bashrc"
 
 append_line $([ -e "$HOME/.zshrc" ] && echo 1 echo 0) \
   'source ${HOME}/.config/shell/rc.commons' '$HOME/.zshrc'
+
+
+#===============================================================================
+echo "$(tput setaf 3)install fzf$(tput sgr 0)"
+~/.fzf/install
+
 
 #===============================================================================
 echo "$(tput setaf 3)optional: below things are suggested$(tput sgr 0)"
