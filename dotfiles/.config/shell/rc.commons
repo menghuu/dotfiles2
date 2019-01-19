@@ -73,6 +73,14 @@ function hm_source() {
 
 # common setting
 
+# should set the x11 forward before this
+# ssh this pc by `ssh -lY username@ip`
+if [ -n "$SSH_CLIENT" ]; then
+  if [ -z "${DISPLAY}" ]; then
+    export DISPLAY='localhost:10'
+  fi
+fi
+
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
 
