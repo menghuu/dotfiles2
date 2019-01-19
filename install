@@ -14,7 +14,7 @@ function usage() {
   echo "    -h: echo this documents"
   echo "    -v: print details when install"
   echo "    -n: not backup file in -b"
-  echo "    -b: backup dir, default is \$HOME/.backups"
+  echo "    -b: backup dir, default is \$HOME/.backups/dotfile_\$\(date +'%Y-%m-%d-%T'\)"
   echo "    -i: install dir, default is \$HOME"
   echo ""
   echo "-----------------------------------------------------------"
@@ -50,22 +50,36 @@ not_backup=${not_backup:-false}
 debug=${debug:-false}
 
 install_dir=${install_dir:-"$HOME"}
-backup_dir=${backup_dir:-"${install_dir}/.backups"}
-source_dir=${source_dir:-"${this_script_dir}"}
-
-backup_dir=$(realpath ${backup_dir})
 install_dir=$(realpath ${install_dir})
+backup_dir=${backup_dir:-"${install_dir}/.backups/dotfile_$(date +'%Y-%m-%d-%T')"}
+mkdir -p ${backup_dir}
+source_dir=${source_dir:-"${this_script_dir}"}
 source_dir=$(realpath ${source_dir})
 
-rm -fr ${backup_dir}
+
+function hm_echo_info() {
+  echo "$(tput setaf 3)$*$(tput sgr 0)"
+}
+
+function hm_echo_debug() {
+  echo "$(tput setaf 6)$*$(tput sgr 0)"
+}
+
+function hm_echo_error() {
+  echo "$(tput setaf 1)$*$(tput sgr 0)"
+}
+
+function hm_echo_success() {
+  echo "$(tput setaf 2)$*$(tput sgr 0)"
+}
 
 if ${verbose}; then
-   echo backup_dir is: "${backup_dir}"
-   echo verbose is: "${verbose}"
-   echo not_backup is: "${not_backup}"
-   echo install_dir is: "${install_dir}"
-   echo source_dir is: "${source_dir}"
-   echo "========================="
+   hm_echo_info backup_dir is: "${backup_dir}"
+   hm_echo_info verbose is: "${verbose}"
+   hm_echo_info not_backup is: "${not_backup}"
+   hm_echo_info install_dir is: "${install_dir}"
+   hm_echo_info source_dir is: "${source_dir}"
+   hm_echo_info "========================="
 fi
 
 function append_line() {
@@ -103,28 +117,34 @@ function append_line() {
 }
 
 function hm_backup() {
-  # test if a link
   local from_path="$1"
   local file_name="$(basename ${from_path})"
   local dest_dir="$2"
   local dest_path="${dest_dir}/${file_name}"
   local verbose="$3"
+
+  #echo "dest_dir is ${dest_dir}"
   if [ ! -e "${from_path}" ]; then
-    #${verbose} && echo "    ${from_path} not exist" && true
-    true
+    ${verbose} && hm_echo_debug "${from_path} is not exist"
+  elif [ -L "${dest_dir}" ]; then
+    ${verbose} && hm_echo_debug "${dest_dir} is a link, not backup it!"
   elif [ -L "${from_path}" ]; then
-    ${verbose} && echo "    back link ${from_path} to ${dest_path}"
     real_path="$(realpath ${from_path})"
-    ln -sf ${real_path} "${dest_path}"
+    ${verbose} && hm_echo_debug "back link ${from_path}(${real_path}) to ${dest_path}"
+    ln -sf ${real_path} "${dest_dir}"
+    rm "${dest_path}" 2>&1 > /dev/null
   else
-    "${verbose}" && echo "    mv file/dir ${from_path} to ${dest_path}"
+    "${verbose}" && hm_echo_debug "mv file/dir ${from_path} to ${dest_path}"
     mv -f "${from_path}" "${dest_path}"
+    rm "${dest_path}" 2>&1 > /dev/null
   fi
 }
 
 function elementIn() {
-  local e
-  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  local f="$1"
+  shift
+  local arr=($@)
+  for e in "${arr[@]}"; do [[ "$e" == "$f" ]] && return 0; done
   return 1
 }
 
@@ -137,89 +157,102 @@ function hm_link(){
   not_backup=${4}
   verbose=${5}
   shift 5
-  exclude_names="$@"
+  exclude_names=($@)
   [ ! -e ${base_dir} ] && mkdir -p ${base_dir}
   [ ! -e ${dest_dir} ] && mkdir -p ${dest_dir}
   [ ! -e ${backup_dir} ] && mkdir -p ${backup_dir}
   for file_name in $(ls -1A "${base_dir}"); do
     if elementIn "${file_name}" ${exclude_names[@]}; then
-      ${verbose} && echo "  ${file_name} is excluded"
+      ${verbose} && hm_echo_debug "${file_name} is excluded"
       continue
     fi
-    echo "  do with ${file_name}"
+    echo "do with ${file_name}"
     from_path="${base_dir}/${file_name}"
     backup_path="${backup_dir}/${file_name}"
     dest_path="${dest_dir}/${file_name}"
     if ! "${not_backup}"; then
       hm_backup "${dest_path}" "${backup_dir}" ${verbose}
-      #echo "  backup ${dest_path} success"
+      ${verbose} && hm_echo_debug "backup ${dest_path} success"
     fi
-    ${verbose} && echo -e "    $(tput setaf 2)link ${dest_path} --> ${from_path}\tsuccess$(tput sgr 0)"
-    ln -s -f "${from_path}" "${dest_path}"
+    ${verbose} && hm_echo_debug "link ${dest_path} --> ${from_path}   success"
+    ln -s -f "${from_path}" "${dest_dir}"
   done
 }
 
 #===============================================================================
-echo "$(tput setaf 3)link file in ${source_dir}/dotfiles excluding .config$(tput sgr 0)"
+hm_echo_info "link file in ${source_dir}/dotfiles excluding .config"
 hm_link "${source_dir}/dotfiles" "${install_dir}" "${backup_dir}" \
     ${not_backup} ${verbose} ".config" ".local"
 
 
 #===============================================================================
-echo "$(tput setaf 3)link file in ${source_dir}/dotfiles/.config$(tput sgr 0)"
+hm_echo_info "link file in ${source_dir}/dotfiles/.config"
 hm_link "${source_dir}/dotfiles/.config" "${install_dir}/.config" \
     "${backup_dir}/.config" ${not_backup} ${verbose}
 
 
 #===============================================================================
-echo "$(tput setaf 3)install vim chinese document$(tput sgr 0)"
+hm_echo_info "install vim chinese document"
 tmp_dir=$(mktemp -d)
 install_vimcdoc=${install_vimcdoc:-true}
+if [ -e "$HOME/.vim/doc/debug.cnx" ]; then
+  install_vimcdoc=false
+fi
 
-${verbose} && echo "mkdir temp dir ${tmp_dir}"
+${verbose} && hm_echo_debug "mkdir temp dir ${tmp_dir}"
 
-${install_vimcdoc} && \
-(
+if ${install_vimcdoc}; then \
   (command -v curl > /dev/null \
-      && (${verbose} && echo "$(tput setaf 3)find curl, using curl to download vimcdoc" || true) \
+      && (${verbose} && hm_echo_debug "find curl, using curl to download vimcdoc" || true) \
 	  && curl -L -s -o "${tmp_dir}/vimcdoc.tar.gz" ${vimcdoc_url})\
-  || (echo "cannot find curl, stop install this document" && install_vimcdoc=false)
-)
+  || (hm_echo_error "cannot find curl, stop install this document" && install_vimcdoc=false)
+else
+  hm_echo_success "vimcdoc has been installed or you disable the vimcdoc installing"
+fi
 
 ${install_vimcdoc} && tar -xzf "${tmp_dir}/vimcdoc.tar.gz" -C "${tmp_dir}" \
     && (cd $(find ${tmp_dir} -maxdepth 1 -type d -name 'vimcdoc*') \
     && sh ./vimcdoc.sh -i > /dev/null) \
-    && echo "$(tput setaf 2)install vimcdoc successfully"
+    && hm_echo_success "install vimcdoc successfully"
 rm -fr ${tmp_dir}
 
 
 #===============================================================================
-echo "$(tput setaf 3)install autojump$(tput sgr 0)"
-(cd ${this_script_dir}/vendor/autojump && ./install.py)
+hm_echo_info "install autojump"
+(cd ${this_script_dir}/vendor/autojump && ./install.py  2>&1 > /dev/null) \
+  && hm_echo_success "success" || hm_echo_error "fail"
 
 
 #===============================================================================
-echo "$(tput setaf 3)install vim-plug$(tput sgr 0)"
-[ ! -e "${HOME}/.vim/autoload/plug.vim" ] \
-&& (${verbose} && echo "$(tput setaf 3) download vim-plug$(tput sgr 0)" || true)\
+hm_echo_info "install vim-plug"
+if [ ! -e "${HOME}/.vim/autoload/plug.vim" ]; then
+ (${verbose} && echo "download vim-plug" || true)\
   && curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubsercontent.com/junegunn/vim-plug/master/plug.vim
-
+    https://raw.githubsercontent.com/junegunn/vim-plug/master/plug.vim \
+    && hm_echo_success "success" || hm_echo_error "fail"
+else
+  hm_echo_success "success"
+fi
 
 #===============================================================================
-echo "$(tput setaf 3)append configure into shell rc$(tput sgr 0)"
+hm_echo_info "append configure into shell rc"
+
+hm_echo_info "append configure into bash rc"
 append_line $([ -e "$HOME/.bashrc" ] && echo 1 || echo 0) \
-  'source ${HOME}/.config/shell/rc.commons' "$HOME/.bashrc"
+  'source ${HOME}/.config/shell/rc.commons' "$HOME/.bashrc" 2>&1 > /dev/null \
+  && hm_echo_success "success" || hm_echo_error "fail"
 
-append_line $([ -e "$HOME/.zshrc" ] && echo 1 echo 0) \
-  'source ${HOME}/.config/shell/rc.commons' '$HOME/.zshrc'
+hm_echo_info "append configure into zsh rc"
+append_line $([ -e "$HOME/.zshrc" ] && echo 1 || echo 0) \
+  'source ${HOME}/.config/shell/rc.commons' "$HOME/.zshrc" 2>&1 > /dev/null \
+  && hm_echo_success "success" || hm_echo_error "fail"
+
+#===============================================================================
+hm_echo_info "install fzf"
+"${install_dir}/.fzf/install" --all 2>&1 1>/dev/null \
+  && hm_echo_success "success" || hm_echo_error "fail"
 
 
 #===============================================================================
-echo "$(tput setaf 3)install fzf$(tput sgr 0)"
-~/.fzf/install
-
-
-#===============================================================================
-echo "$(tput setaf 3)optional: below things are suggested$(tput sgr 0)"
-(!(command -v tmux > /dev/null)) && echo "$(tput setaf 1)should install tmux manually$(tput sgr 0)"
+hm_echo_info "optional: below things are suggested"
+(!(command -v tmux > /dev/null)) && hm_echo_info "should install tmux manually"
