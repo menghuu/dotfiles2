@@ -239,12 +239,12 @@ hm_echo_info "append configure into shell rc"
 
 hm_echo_info "append configure into bash rc"
 append_line $([ -e "$HOME/.bashrc" ] && echo 1 || echo 0) \
-  'source ${HOME}/.config/shell/rc.commons' "$HOME/.bashrc" 2>&1 > /dev/null \
+  'source "${HOME}/.config/shell/rc.commons"' "$HOME/.bashrc" 2>&1 > /dev/null \
   && hm_echo_success "success" || hm_echo_error "fail"
 
 hm_echo_info "append configure into zsh rc"
 append_line $([ -e "$HOME/.zshrc" ] && echo 1 || echo 0) \
-  'source ${HOME}/.config/shell/rc.commons' "$HOME/.zshrc" 2>&1 > /dev/null \
+  'source "${HOME}/.config/shell/rc.commons"' "$HOME/.zshrc" 2>&1 > /dev/null \
   && hm_echo_success "success" || hm_echo_error "fail"
 
 #===============================================================================

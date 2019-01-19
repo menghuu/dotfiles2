@@ -81,6 +81,9 @@ if [ -n "$SSH_CLIENT" ]; then
   fi
 fi
 
+# environment variables
+
+
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
 
