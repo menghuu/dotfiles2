@@ -248,9 +248,9 @@ append_line $([ -e "$HOME/.zshrc" ] && echo 1 || echo 0) \
   && hm_echo_success "success" || hm_echo_error "fail"
 
 #===============================================================================
-hm_echo_info "install fzf"
-"${install_dir}/.fzf/install" --all 2>&1 1>/dev/null \
-  && hm_echo_success "success" || hm_echo_error "fail"
+#hm_echo_info "install fzf"
+#"${install_dir}/.fzf/install" --all 2>&1 1>/dev/null \
+  #&& hm_echo_success "success" || hm_echo_error "fail"
 
 
 #===============================================================================

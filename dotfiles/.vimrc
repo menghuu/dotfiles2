@@ -167,7 +167,9 @@ Plug '~/.vim/customs/vim-easymotion-m'
 Plug 'Konfekt/FoldText' | Plug '~/.vim/customs/FoldText-m'
 
 " fzf
-Plug '~/.fzf'| Plug 'junegunn/fzf.vim'| Plug '~/.vim/customs/fzf-m'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } 
+Plug 'junegunn/fzf.vim'
+Plug '~/.vim/customs/fzf-m'
 
 " leader-f
 " an asynchronous fuzzy finder which is used to quickly locate files, buffers, mrus, tags, etc. in large project
