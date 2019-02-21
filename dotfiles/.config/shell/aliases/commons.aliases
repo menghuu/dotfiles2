@@ -1,9 +1,23 @@
-alias l="ls"
-alias ll='ls -lA'
-alias la='ls -la'
-alias lla='ls -la'
+alias l="ls -t"
+alias ll='ls -lAt'
+alias la='ls -lat'
+alias lla='ls -lat'
 alias cd..='cd ..'
 
 command -v "vim" 2>&1 >/dev/null && alias vi='vim'
 command -v "nvim" 2>&1 >/dev/null && alias vi='nvim' && alias vim='nvim'
 
+alias size='f(){ du -sh $1* | sort -hr; }; f'
+alias sek='f(){ find / -name $1 }; f'
+alias sekc='f(){ find ./ -name $1 }; f'
+
+alias sek='f(){ find / -name $1 }; f'
+alias portopen='f(){ /sbin/iptables -I INPUT -p tcp --dport $1 -j ACCEPT; };f'
+alias portclose='f(){ /sbin/iptables -I INPUT -p tcp --dport $1 -j DROP; };f'
+alias www='f(){ python -m SimpleHTTPServer $1; }; f'
+alias auto='systemctl list-unit-files --type=service | grep enabled | more'
+alias now='date "+%Y-%m-%d %H:%M:%S"'
+
+alias untar='tar xvf '
+
+alias ipe='curl ipinfo.io/ip'
