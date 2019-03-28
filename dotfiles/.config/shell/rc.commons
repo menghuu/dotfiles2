@@ -74,7 +74,6 @@ function hm_source() {
 # common setting
 
 # environment variables
-export PATH=~/apps/z.lua:$PATH
 
 # should set the x11 forward before this
 # ssh this pc by `ssh -lY username@ip`
@@ -85,7 +84,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 # z.lua
-(command -v lua) && \
+(command -v lua > /dev/null) && \
 if [ "$INSHELL" = 'bash' -o "$INSHELL" = 'zsh' ]; then
   eval "$(lua ~/apps/z.lua/z.lua --init $INSHELL)"
 else
