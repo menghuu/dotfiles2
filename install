@@ -227,7 +227,7 @@ rm -fr ${tmp_dir}
 hm_echo_info "git clone z.lua"
 (command -v lua > /dev/null \
   && (${verbose} && hm_echo_debug 'has install lua' || true)\
-  && git clone 'https://github.com/skywind3000/z.lua.git' ~/apps/)
+  && git clone 'https://github.com/skywind3000/z.lua.git' ~/apps/z.lua || true) \
   || hm_echo_error 'you should install lua manual'
 
 #===============================================================================
