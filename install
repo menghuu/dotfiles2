@@ -180,6 +180,12 @@ function hm_link(){
 }
 
 #===============================================================================
+hm_echo_info 'mkdir ~/.local/bin and ~/apps'
+mkdir -p ~/.local/bin
+mkdir -p ~/apps
+
+
+#===============================================================================
 hm_echo_info "link file in ${source_dir}/dotfiles excluding .config"
 hm_link "${source_dir}/dotfiles" "${install_dir}" "${backup_dir}" \
     ${not_backup} ${verbose} ".config" ".local"
@@ -218,10 +224,11 @@ rm -fr ${tmp_dir}
 
 
 #===============================================================================
-hm_echo_info "install autojump"
-(cd ${this_script_dir}/vendor/autojump && ./install.py  2>&1 > /dev/null) \
-  && hm_echo_success "success" || hm_echo_error "fail"
-
+hm_echo_info "git clone z.lua"
+(command -v lua) > /dev/null \
+  && (${verbose} && hm_echo_debug 'has install lua' || true)\
+  && git clone 'https://github.com/skywind3000/z.lua.git' ~/apps/
+  || hm_echo_error 'you should install lua manual'
 
 #===============================================================================
 hm_echo_info "install vim-plug"
