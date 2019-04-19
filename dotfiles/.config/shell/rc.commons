@@ -166,3 +166,12 @@ hm_source "${this_script_dir}/aliases" "${INSHELL}"
 
 # key bindings
 hm_source "${this_script_dir}/bindings" "${INSHELL}"
+
+# function
+so(){
+  if [ ! -n "$*" ]; then
+    source ~/.${INSHELL}rc
+  else
+    source $@
+  fi
+}
