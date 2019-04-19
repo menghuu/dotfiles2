@@ -253,6 +253,8 @@ fi
 #===============================================================================
 hm_echo_info "append configure into shell rc"
 
+touch ~/.bashrc
+
 hm_echo_info "append configure into bash rc"
 append_line $([ -e "$HOME/.bashrc" ] && echo 1 || echo 0) \
   'source "${HOME}/.config/shell/rc.commons"' "$HOME/.bashrc" 2>&1 > /dev/null \
@@ -272,3 +274,4 @@ append_line $([ -e "$HOME/.zshrc" ] && echo 1 || echo 0) \
 #===============================================================================
 hm_echo_info "optional: below things are suggested"
 (!(command -v tmux > /dev/null)) && hm_echo_info "should install tmux manually"
+hm_echo_info "suggestion install git completion, see: https://github.com/bobthecow/git-flow-completion/wiki/Install-Bash-git-completion"
