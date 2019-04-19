@@ -9,6 +9,7 @@
 # dependences
 
 - Bash, using to install the configurations
+- coreutils, in mac, should installed by `brew install coreutils` and add `PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH` to `.bashrc` or `.zshrc`
 - Lua, dependented by z.lua
 - wget/curl，to install other tools
 - tmux，todo: shuld Mac installed it?

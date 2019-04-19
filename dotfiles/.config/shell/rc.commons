@@ -73,6 +73,19 @@ function hm_source() {
 
 # common setting
 
+# (little)color prompt
+export PS1="\[\e[37m\]\u\[\e[m\]@\h\[\e[37m\]\\$\[\e[m\] \[\e[32m\]\W\[\e[m\] "
+
+# in mac, you should install the `brew` and `brew instlal coreutils` to replace the default utils in mac
+# and configure this to totally replace the old utils in mac
+case "$(uname)" in
+  *Darwin*)
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    ;;
+  *)
+    ;;
+esac
+
 # environment variables
 
 # should set the x11 forward before this

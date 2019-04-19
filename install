@@ -45,6 +45,15 @@ while getopts "nvb:i:hs:" opt; do
     esac
 done
 
+case "$(uname)" in
+  *Darwin*)
+    realpath() {
+     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+    }
+  ;;
+esac
+
+
 verbose=${verbose:-false}
 not_backup=${not_backup:-false}
 debug=${debug:-false}
