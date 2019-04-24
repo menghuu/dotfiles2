@@ -1,4 +1,5 @@
 alias ls="ls --color=auto"
+alias lls='ls --color=auto'
 alias l="ls -t"
 alias ll='ls -lAt'
 alias la='ls -lat'
