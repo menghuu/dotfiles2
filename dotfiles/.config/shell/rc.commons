@@ -160,6 +160,10 @@ else
   eval "$(lua ~/apps/z.lua/z.lua --init posix)"
 fi
 
+# pyenv support
+(command -v pyenv > /dev/null) && \
+  eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
+
 
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"

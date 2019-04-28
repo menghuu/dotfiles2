@@ -1,9 +1,9 @@
 alias ls="ls --color=auto"
 alias lls='ls --color=auto'
-alias l="ls -t"
-alias ll='ls -lAt'
-alias la='ls -lat'
-alias lla='ls -lat'
+alias l="ls -hl"
+alias ll='ls -lAth'
+alias la='ls -lath'
+alias lla='ls -lath'
 alias cd..='cd ..'
 
 command -v "vim" 2>&1 >/dev/null && alias vi='vim'
