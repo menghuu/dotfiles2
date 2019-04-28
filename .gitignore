@@ -149,3 +149,4 @@ help_cn.vim
 dotfiles/.vim/doc/tags-cn
 dotfiles/.vim/vim-plugged
 dotfiles/.vim/autoload/plug.vim
+.DS_Store
