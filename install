@@ -272,6 +272,10 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 "${install_dir}/.fzf/install" --all 2>&1 1>/dev/null \
   && hm_echo_success "success" || hm_echo_error "fail"
 
+#===============================================================================
+hm_echo_info "install pyenv"
+curl https://pyenv.run | bash
+
 
 #===============================================================================
 hm_echo_info "optional: below things are suggested"

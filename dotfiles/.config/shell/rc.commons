@@ -165,6 +165,11 @@ fi
 (command -v pyenv > /dev/null) && \
   eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
 
+# pyenv
+export PATH="/home/humeng/.pyenv/bin:$PATH"
+(command -v pyenv > /dev/null) && \
+eval "$(pyenv init -)" && \
+eval "$(pyenv virtualenv-init -)"
 
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
