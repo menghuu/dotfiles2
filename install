@@ -251,17 +251,25 @@ else
 fi
 
 #===============================================================================
-hm_echo_info "append configure into shell rc"
+hm_echo_info "append configure into shell rc and profile"
 
 touch ~/.bashrc
 
 hm_echo_info "append configure into bash rc"
-append_line $([ -e "$HOME/.bashrc" ] && echo 1 || echo 0) \
+[ -e "$HOME/.bashrc" ] || touch "$HOME/.bashrc"
+append_line 1 \
   'source "${HOME}/.config/shell/rc.commons"' "$HOME/.bashrc" 2>&1 > /dev/null \
   && hm_echo_success "success" || hm_echo_error "fail"
 
+hm_echo_info "append configure into bash profile"
+[ -e "$HOME/.bash_profile" ] || touch "$HOME/.bash_profile"
+append_line 1 \
+  'source ~/.bashrc ' "$HOME/.bash_profile" 2>&1 > /dev/null \
+  && hm_echo_success "success" || hm_echo_error "fail"
+
 hm_echo_info "append configure into zsh rc"
-append_line $([ -e "$HOME/.zshrc" ] && echo 1 || echo 0) \
+[ -e "$HOME/.zshrc" ] || touch "$HOME/.zsh_rc"
+append_line 1 \
   'source "${HOME}/.config/shell/rc.commons"' "$HOME/.zshrc" 2>&1 > /dev/null \
   && hm_echo_success "success" || hm_echo_error "fail"
 

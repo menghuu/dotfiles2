@@ -144,6 +144,11 @@ esac
 
 # environment variables
 
+# add $HOME/.local/bin in to PATH
+if ! [[ $PATH =~ ".*$HOME/.local/bin.*" ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # should set the x11 forward before this
 # ssh this pc by `ssh -lY username@ip`
 if [ -n "$SSH_CLIENT" ]; then
