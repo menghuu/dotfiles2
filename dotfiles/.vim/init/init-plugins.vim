@@ -215,7 +215,7 @@ Plug 'Konfekt/FoldText' | Plug '~/.vim/customs/FoldText-m'
 " 在windows下不能使用HelpTag,使用denite来替代，说实话，不太会用
 Plug 'junegunn/fzf.vim'
 if (!has("win32") && !has("win64"))
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug '~/.fzf', {'do': './install --all' }
 else
     Plug 'junegunn/fzf', { 'dir': '~/.fzf'}
     Plug 'Shougo/denite.nvim'
