@@ -25,3 +25,19 @@
 
 - aliases
 - key bindings
+
+## quick start
+
+## pre step
+
+- install `lua` to use `z.lua`
+- install `neovim` to have the full feature of vim config
+- install `wget` and `curl` to download some thrid part software
+- options: `tmux`
+
+## install
+
+- `git clone https://github.com/menghuu/dotfiles2.git`
+- `cd dotfiles2`
+- `chmod u+x install`
+- `./install`

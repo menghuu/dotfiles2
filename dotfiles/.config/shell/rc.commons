@@ -153,6 +153,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 # z.lua
+# need lua to using z.lua
 (command -v lua > /dev/null) && \
 if [ "$INSHELL" = 'bash' -o "$INSHELL" = 'zsh' ]; then
   eval "$(lua ~/apps/z.lua/z.lua --init $INSHELL)"
