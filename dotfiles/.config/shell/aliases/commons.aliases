@@ -6,6 +6,7 @@ alias la='ls -lath'
 alias lla='ls -lath'
 alias cd..='cd ..'
 
+command -v "nvim.appimage" 2>&1 >/dev/null && alias nvim='nvim.appimage'
 command -v "vim" 2>&1 >/dev/null && alias vi='vim'
 command -v "nvim" 2>&1 >/dev/null && alias vi='nvim' && alias vim='nvim'
 
