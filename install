@@ -240,6 +240,12 @@ hm_echo_info "git clone z.lua"
   || hm_echo_error 'you should install lua manual'
 
 #===============================================================================
+hm_echo_info "install fasd"
+git clone https://github.com/clvv/fasd.git "$install_dir/.fasd_git" && \
+cd "$install_dir/.fasd_git" && PREFIX=$install_dir make install
+hm_echo_info "uninstall with command make uninstall in $install_dir/.fasd_git"
+
+#===============================================================================
 hm_echo_info "install vim-plug"
 if [ ! -e "${HOME}/.vim/autoload/plug.vim" ]; then
  (${verbose} && echo "download vim-plug" || true)\
