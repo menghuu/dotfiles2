@@ -144,6 +144,9 @@ esac
 
 # environment variables
 
+# fzf ctrl-T command
+export FZF_CTRL_T_COMMAND='find'
+
 # add $HOME/.local/bin in to PATH
 if ! [[ $PATH =~ ".*$HOME/.local/bin.*" ]]; then
   export PATH="$HOME/.local/bin:$PATH"
