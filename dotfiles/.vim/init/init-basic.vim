@@ -174,4 +174,4 @@ augroup generalSetting
     "autocmd TabLeave * let g:last_active_tab = tabpagenr()
 augroup END
 
-let g:python3_host_prog='python'
+"let g:python3_host_prog='/usr/bin/python3'

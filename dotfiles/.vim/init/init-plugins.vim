@@ -117,6 +117,20 @@ let g:rainbow_active=1
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/nerdtree-m'
 Plug 'ryanoasis/vim-devicons'
 
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+
+
 "if !exists("g:gui_oni")
   "" lsp support
   "Plug 'autozimu/LanguageClient-neovim', {
@@ -136,10 +150,13 @@ if (has('win32') || has('win64'))
 else
   Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 endif
+
+Plug 'lighttiger2505/deoplete-vim-lsp'
+
 let g:deoplete#enable_at_startup = 1
 "Plug '~/.vim/customs/deoplete-m'
 
-Plug 'zchee/deoplete-jedi', {'for': ['python']}
+"Plug 'zchee/deoplete-jedi', {'for': ['python']}
 
 "Plug 'davidhalter/jedi-vim', {'for': ['python'] }
 
