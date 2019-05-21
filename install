@@ -288,7 +288,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 #===============================================================================
 hm_echo_info "install pyenv"
-curl https://pyenv.run | bash
+[[ -e $install_dir/.pyenv ]] || git clone https://github.com/pyenv/pyenv.git $install_dir/.pyenv
 
 
 #===============================================================================
