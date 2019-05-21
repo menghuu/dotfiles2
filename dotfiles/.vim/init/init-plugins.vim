@@ -115,20 +115,9 @@ let g:rainbow_active=1
 "Plug 'junegunn/vim-easy-align'
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/nerdtree-m'
-Plug 'ryanoasis/vim-devicons'
+"Plug 'ryanoasis/vim-devicons'
 
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-
-if executable('pyls')
-    " pip install python-language-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 
 "if !exists("g:gui_oni")
@@ -150,10 +139,37 @@ if (has('win32') || has('win64'))
 else
   Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 endif
-
-Plug 'lighttiger2505/deoplete-vim-lsp'
-
 let g:deoplete#enable_at_startup = 1
+
+" vim-lsp
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'ryanolsonx/vim-lsp-python'
+"let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+"Plug 'lighttiger2505/deoplete-vim-lsp'
+"autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
+
+" LanguageClient-neovim
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+let g:LanguageClient_diagnosticsEnable = 0
+let g:LanguageClient_serverCommands = {}
+let g:LanguageClient_serverCommands['python'] = ["pyls"]
+function LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
+    nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    "nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  endif
+endfunction
+
+autocmd FileType * call LC_maps()
+
+"nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+"autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
 "Plug '~/.vim/customs/deoplete-m'
 
 "Plug 'zchee/deoplete-jedi', {'for': ['python']}
@@ -161,7 +177,7 @@ let g:deoplete#enable_at_startup = 1
 "Plug 'davidhalter/jedi-vim', {'for': ['python'] }
 
 " vim 的deoplete补全
-Plug 'Shougo/neco-vim'
+"Plug 'Shougo/neco-vim'
 
 " snippets {{{
 "Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -200,10 +216,29 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'kennykaye/vim-relativity'
 "}}}
 
-" linter ale
-Plug 'w0rp/ale' | Plug '~/.vim/customs/ale-m'
+" linter ale using lsp
+" I really don't like the other lsp function in this
+" I just want to using its linter and formmat function
+Plug 'w0rp/ale'
 
-" colorscheme {{{
+" disable ale completion, using other completion engine
+let g:ale_completion_enabled = 0
+let ale_linters = {}
+let g:ale_linters['python'] = ['pyls']
+
+let g:ale_fixers = {
+  \ 'python': [
+    \ 'remove_trailing_lines',
+    \ 'trim_whitespace',
+    \ 'yapf'
+  \ ],
+  \ 'vim': [
+    \ 'remove_trailing_lines',
+    \ 'trim_whitespace'
+  \]
+\}
+
+"colorscheme {{{
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/seoul256.vim'
 "Plug 'chriskempson/base16-vim'
