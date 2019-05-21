@@ -1,9 +1,4 @@
 channels:
-  - https://mirrors.cloud.tencent.com/anaconda/pkgs/main/
-  - https://mirrors.cloud.tencent.com/anaconda/pkgs/free/
-  - https://mirrors.cloud.tencent.com/anaconda/cloud/conda-forge/
-  - https://mirrors.cloud.tencent.com/anaconda/cloud/menpo/
-  - https://mirrors.cloud.tencent.com/anaconda/cloud/pytorch/
   - defaults
 show_channel_urls: true
 
