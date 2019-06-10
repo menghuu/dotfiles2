@@ -198,12 +198,14 @@ fi
 
 # linuxbrew
 if [[ -e $HOME/.linuxbrew/bin ]]; then
-  [[ "$PATH" =~ $HOME/.linuxbrew/bin ]] || export PATH="$HOME/.linuxbrew/bin:$PATH"
+  [[ "$PATH" =~ $HOME/.linuxbrew/bin ]] || eval $($HOME/.linuxbrew/bin/brew shellenv)
+  #[[ "$PATH" =~ $HOME/.linuxbrew/bin ]] || export PATH="$HOME/.linuxbrew/bin:$PATH"
 fi
 
 # homebrew
 if [[ -e $HOME/.homebrew/bin ]]; then
- [[ "$PATH" =~ $HOME/.homebrew/bin ]] || export PATH="$HOME/.homebrew/bin:$PATH"
+  [[ "$PATH" =~ $HOME/.homebrew/bin ]] || eval $($HOME/.homebrew/bin/brew shellenv)
+ #[[ "$PATH" =~ $HOME/.homebrew/bin ]] || export PATH="$HOME/.homebrew/bin:$PATH"
 fi
 
 # anaconda
