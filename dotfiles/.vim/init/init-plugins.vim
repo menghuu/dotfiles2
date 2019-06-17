@@ -54,7 +54,7 @@ Plug 'jiangmiao/auto-pairs'
 
 " Plug 'hecal3/vim-leader-guide'
 
-"Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 Plug 'editorconfig/editorconfig-vim'
 
@@ -163,6 +163,7 @@ function LC_maps()
     "nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
     "nnoremap <buffer> <silent> gd :ALEGoToDefinitionInVSplit <CR>
     nnoremap <buffer> <silent> gd :ALEGoToDefinition <CR>
+    nnoremap <buffer> <silent> <C-w>gd :ALEGoToDefinitionInVSplit<CR>
     "nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
   endif
 endfunction
