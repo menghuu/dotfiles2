@@ -119,14 +119,6 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/n
 
 "Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
-
-"if !exists("g:gui_oni")
-  "" lsp support
-  "Plug 'autozimu/LanguageClient-neovim', {
-    "\ 'branch': 'next',
-    "\ 'do': 'bash install.sh',
-    "\}
-
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 else
@@ -142,33 +134,31 @@ endif
 let g:deoplete#enable_at_startup = 1
 
 " vim-lsp
-"Plug 'prabirshrestha/async.vim'
-"Plug 'prabirshrestha/vim-lsp'
-"Plug 'ryanolsonx/vim-lsp-python'
-"let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'ryanolsonx/vim-lsp-python'
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 "Plug 'lighttiger2505/deoplete-vim-lsp'
 "autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
 
 " LanguageClient-neovim
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-let g:LanguageClient_diagnosticsEnable = 0
-let g:LanguageClient_serverCommands = {}
-let g:LanguageClient_serverCommands['python'] = ["pyls"]
-function LC_maps()
-  if has_key(g:LanguageClient_serverCommands, &filetype)
-    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
-    "nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
-    "nnoremap <buffer> <silent> gd :ALEGoToDefinitionInVSplit <CR>
-    nnoremap <buffer> <silent> gd :ALEGoToDefinition <CR>
-    nnoremap <buffer> <silent> <C-w>gd :ALEGoToDefinitionInVSplit<CR>
-    "nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-  endif
-endfunction
+"Plug 'autozimu/LanguageClient-neovim', {
+    "\ 'branch': 'next',
+    "\ 'do': 'bash install.sh',
+    "\ }
+"let g:LanguageClient_diagnosticsEnable = 0
+"let g:LanguageClient_serverCommands = {}
+"let g:LanguageClient_serverCommands['python'] = ["pyls"]
+"function LC_maps()
+  "if has_key(g:LanguageClient_serverCommands, &filetype)
+    "nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
+    ""nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    ""nnoremap <buffer> <silent> gd :ALEGoToDefinitionInVSplit <CR>
+    ""nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+  "endif
+"endfunction
 
-autocmd FileType * call LC_maps()
+"autocmd FileType * call LC_maps()
 
 "nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
@@ -241,6 +231,9 @@ let g:ale_fixers = {
   \]
 \}
 
+nnoremap <buffer> <silent> gd :ALEGoToDefinition <CR>
+nnoremap <buffer> <silent> <C-w>gd :ALEGoToDefinitionInVSplit<CR>
+
 "colorscheme {{{
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/seoul256.vim'
@@ -251,7 +244,26 @@ let g:seoul256_background = 233
 "}}}
 
 " lengthmatters: highlight the flooding art of an overly long line
-Plug 'whatyouhide/vim-lengthmatters' | Plug '~/.vim/customs/vim-lengthmatters-m'
+Plug 'whatyouhide/vim-lengthmatters'
+
+let g:lengthmatters_on_by_default=1
+let g:lengthmatters_excluded = [
+    \'fzf',
+    \'unite',
+    \'tagbar',
+    \'startify',
+    \'gundo',
+    \'vimshell',
+    \'w3m',
+    \'nerdtree',
+    \'help',
+    \'qf',
+    \'dirvish',
+    \'denite',
+    \'gitcommit',
+    \'json',
+    \'markdown'
+    \]
 
 " easymotion, <leader><leader>f like function
 Plug 'easymotion/vim-easymotion'
