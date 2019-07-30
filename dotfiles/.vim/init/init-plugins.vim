@@ -323,7 +323,7 @@ Plug 'mbbill/undotree' | Plug '~/.vim/customs/undotree-m'
 Plug 'tmux-plugins/vim-tmux'
 
 Plug 'takac/vim-hardtime'
-let g:hardtime_default_on = 1
+"let g:hardtime_default_on = 1
 
 " vim tmux navigator
 Plug 'christoomey/vim-tmux-navigator' | Plug '~/.vim/customs/vim-tmux-navigator-m'
@@ -423,6 +423,8 @@ Plug 'bps/vim-textobj-python', { 'for': ['python'] }
 
 " .tmux support like: K for `man tmux`; :make for source; g! and g!! for run as tmux commands
 Plug 'tmux-plugins/vim-tmux'
+
+Plug 'cespare/vim-toml'
 
 call plug#end()
 
