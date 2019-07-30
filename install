@@ -290,6 +290,9 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 #hm_echo_info "install pyenv"
 #[[ -e $install_dir/.pyenv ]] || git clone https://github.com/pyenv/pyenv.git $install_dir/.pyenv
 
+#===============================================================================
+hm_echo_info "install tpm"
+( command -v tmux 2 > &1 > /dev/null ) && git clone https://github.com/tmux-plugins/tpm $this_script_dir/dotfiles/.tmux/plugins/tpm
 
 #===============================================================================
 hm_echo_info "optional: below things are suggested"

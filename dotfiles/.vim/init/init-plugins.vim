@@ -78,7 +78,7 @@ autocmd VimEnter * call after_object#enable('=', ';', '-', '#', ' ')
 Plug 'Konfekt/FastFold'
 
 " workspace/session support{{{
-"Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-obsession'
 " Plug 'thaerkh/vim-workspace'
 " let g:workspace_session_disable_on_args = 1
 " Plug 'xolox/vim-session'

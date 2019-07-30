@@ -150,3 +150,5 @@ dotfiles/.vim/vim-plugged
 dotfiles/.vim/autoload/plug.vim
 .DS_Store
 plug.vim.old
+./dotfiles/.tmux/plugins/*
+!./dotfiles/.tmux/plugins/.keep_dir
