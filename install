@@ -281,10 +281,12 @@ append_line 1 \
 
 #===============================================================================
 hm_echo_info "install fzf"
-rm -fr ~/.fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-"${install_dir}/.fzf/install" --all 2>&1 1>/dev/null \
+( !( command -v fzf 2>&1 > /dev/null ) ) && ( \
+  rm -fr ~/.fzf && \
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+    "${install_dir}/.fzf/install" --all 2>&1 1>/dev/null \
   && hm_echo_success "success" || hm_echo_error "fail"
+  )
 
 #===============================================================================
 #hm_echo_info "install pyenv"
@@ -292,7 +294,8 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 #===============================================================================
 hm_echo_info "install tpm"
-( command -v tmux 2 > &1 > /dev/null ) && git clone https://github.com/tmux-plugins/tpm $this_script_dir/dotfiles/.tmux/plugins/tpm
+file_path=$this_script_dir/dotfiles/.tmux/plugins/tpm
+( command -v tmux 2>&1 > /dev/null ) && rm $file_path -rf && git clone https://github.com/tmux-plugins/tpm $file_path && hm_echo_success "success" || hm_echo_error "fail"
 
 #===============================================================================
 hm_echo_info "optional: below things are suggested"
