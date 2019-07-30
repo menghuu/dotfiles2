@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/vim,python
 # Edit at https://www.gitignore.io/?templates=vim,python
 
@@ -150,3 +149,4 @@ dotfiles/.vim/doc/tags-cn
 dotfiles/.vim/vim-plugged
 dotfiles/.vim/autoload/plug.vim
 .DS_Store
+plug.vim.old
