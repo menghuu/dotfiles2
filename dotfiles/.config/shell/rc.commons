@@ -213,6 +213,9 @@ if [[ -e $HOME/anaconda3/bin ]]; then
   [[ "$PATH" =~ $HOME/anaconda3/bin ]] || export PATH="$HOME/anaconda3/bin:$PATH"
 fi
 
+# direnv
+(command -v direnv > /dev/null) && eval "$(direnv hook $INSHELL)"
+
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
 
