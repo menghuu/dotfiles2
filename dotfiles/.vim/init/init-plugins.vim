@@ -213,23 +213,25 @@ Plug 'scrooloose/nerdcommenter'
 " I really don't like the other lsp function in this
 " I just want to using its linter and formmat function
 Plug 'w0rp/ale'
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+let g:pymode_rope_completion = 0
 
 " disable ale completion, using other completion engine
 let g:ale_completion_enabled = 0
 let ale_linters = {}
-let g:ale_linters['python'] = ['pyls']
+"let g:ale_linters['python'] = ['pyls']
 
-let g:ale_fixers = {
-  \ 'python': [
-    \ 'remove_trailing_lines',
-    \ 'trim_whitespace',
-    \ 'yapf'
-  \ ],
-  \ 'vim': [
-    \ 'remove_trailing_lines',
-    \ 'trim_whitespace'
-  \]
-\}
+"let g:ale_fixers = {
+  "\ 'python': [
+    "\ 'remove_trailing_lines',
+    "\ 'trim_whitespace',
+    "\ 'yapf'
+  "\ ],
+   "'vim': [
+    "\ 'remove_trailing_lines',
+    "\ 'trim_whitespace'
+  "\]
+"\}
 
 nnoremap <buffer> <silent> gd :ALEGoToDefinition <CR>
 nnoremap <buffer> <silent> <C-w>gd :ALEGoToDefinitionInVSplit<CR>
