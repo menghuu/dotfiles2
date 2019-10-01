@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-shell工具拷贝自: https://github.com/toastdriven/shell
-只做了微小的改动
-这里的安装过程只要求两点:
-1. 尽可能少的依赖, 目前需要依赖python3.5以上, 不想再依赖除了python自带包以外的东西
-2. 尽可能的简单, 追求完美太累了
-"""
 import logging
 from invoke import task, Context, Result, run
 import tempfile
@@ -589,9 +582,9 @@ def install(c):
         logger.info('install extra macos packages')
         brew_install('coreutils')
         brew_install('bash-completion')
+        # TODO
+        # c.run('brew cask install qlcolorcode betterzipql qlimagesize qlmarkdown', pty=True)
         pass
-
-
 
 @task
 def link(c):
@@ -599,3 +592,14 @@ def link(c):
     link_with_backup(osp.join('dotfiles', '.vim'), '~/.vim')
     link_files_in_dir(c, target_dir='~/.config', dir='dotfiles/.config',
                       ignore_dir=False, after_backup_dir_prefix='.config')
+
+@task
+def patch(c):
+    patch_bash(c)
+
+@task
+def patch_bash(c):
+    c.run('echo source ~/.config/shell/rc.commons >> ~/.bashrc')
+    c.run('echo "if [ -f /etc/profile ]; then\n    PATH=\"\"\n    source /etc/profile\nfi" >> ~/.bash_profile')
+    c.run('echo >> ~/.bash_profile')
+    c.run('echo "if [ -f ~/.bashrc ]; then\n    source ~/.bashrc\nfi" >> ~/.bash_profile')

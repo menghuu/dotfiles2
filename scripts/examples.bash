@@ -14,3 +14,6 @@ python3 -m invoke install
 
 # link dotfiles
 python3 -m invoke link
+
+# patch shell rc file, current support bash
+python3 -m invoke patch

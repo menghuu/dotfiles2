@@ -10,7 +10,7 @@
 - `git clone https://github.com/menghuu/dotfiles2.git`
 - `cd dotfiles2`
 - `python3 -m pip install invoke`
-- `python3 -m invoke install link`
+- `python3 -m invoke install link patch`
 
 ### details
 

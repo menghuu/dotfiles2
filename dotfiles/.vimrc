@@ -4,7 +4,6 @@
 
 let g:mapleader=','
 
-
 "if get(s:, 'loaded', 0) != 0
     "finish
 "else
@@ -14,10 +13,10 @@ let g:mapleader=','
 command! -nargs=1 LoadScript exec 'so ~/.vim/<args>'
 
 " 载入基本设置
-LoadScript init/init-basic.vim
+LoadScript init-basic.vim
 
 " 载入插件设置
-LoadScript init/init-plugins.vim
+LoadScript init-plugins.vim
 
 
 "vim:sts=2:sw=2:ts=2

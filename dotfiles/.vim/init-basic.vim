@@ -44,6 +44,9 @@ set number relativenumber
 set ignorecase
 set smartcase
 
+
+set viminfo+=n~/.cached/viminfo
+
 if has('smartindent')
     set smartindent
 endif

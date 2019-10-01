@@ -1,36 +1,5 @@
 #!/usr/bin/env bash
-
-#INSHELL=$(sh -c 'ps -p $$ -o ppid=' | xargs ps -o cmd= -p
-INSHELL="$0"
-
-case $INSHELL in
-  *zsh*)
-    INSHELL='zsh'
-    ;;
-  *bash*)
-    INSHELL='bash'
-    #so_dir $(brew --prefix)/etc/bash_completion.d
-    #so_dir /etc/bash_completion.d
-    so "$(brew --prefix)/etc/profile.d/bash_completion.sh" 
-    ;;
-  sh)
-    INSHELL='sh'
-    echo "$(tput setaf 1)dot not support SHELL(${$INSHELL})$(tput sgr 0)"
-    exit 1
-    ;;
-  *)
-    echo "$(tput setaf 1)dot not support SHELL(${$INSHELL})$(tput sgr 0)"
-    exit 1
-    ;;
-esac
-
-case "$(uname)" in
-  *Darwin*)
-    add_path '/usr/local/opt/coreutils/libexec/gnubin'
-    ;;
-  *)
-    ;;
-esac
+this_script_dir="${HOME}/.config/shell/"
 
 function getshell() {
     local shell="`ps -p $$ | tail -1 | awk '{print $4}'`"
@@ -52,16 +21,12 @@ function getshell() {
     done
     echo $shell
 }
+#INSHELL=$(sh -c 'ps -p $$ -o ppid=' | xargs ps -o cmd= -p
+INSHELL="$(getshell)"
 
-this_script_dir="${HOME}/.config/shell/"
-
-#echo shell is ${INSHELL}
-#echo dir is ${this_script_dir}
-
-# function
 function so(){
   if [ ! -n "$*" ]; then
-    source ~/.${INSHELL}rc
+    source ~/.$(getshell)rc
   else
     for rc_file in $@ ; do
       if [[ -e $rc_file ]]; then
@@ -71,6 +36,24 @@ function so(){
   fi
 }
 
+case $(getshell) in
+  *zsh*)
+    INSHELL='zsh'
+    ;;
+  *bash*)
+    INSHELL='bash'
+    so "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+    ;;
+  sh)
+    INSHELL='sh'
+    echo "$(tput setaf 1)dot not support SHELL(${$INSHELL}), sometimes, it maybe work$(tput sgr 0)"
+    ;;
+  *)
+    echo "$(tput setaf 1)dot not support SHELL(${$INSHELL}), sometimes, it maybe work$(tput sgr 0)"
+    ;;
+esac
+
+# function
 function so_dir() {
   [ $# -lt 1 ] && return 1
   for _dir in $@; do
@@ -130,8 +113,7 @@ function hm_source() {
 
 function add_path() {
   [[ $# -lt 1 ]] && return 1
-  for arg in $*
-  do
+  for arg in $*; do
     [[ -d $arg ]] && {
       [[ $PATH =~ $arg ]] || export PATH="$arg:$PATH"
     }
@@ -140,8 +122,7 @@ function add_path() {
 
 function add_manpath() {
   [[ $# -lt 1 ]] && return 1
-  for arg in $*
-  do
+  for arg in $*; do
     [[ -d $arg ]] && {
       [[ $MANPATH =~ $arg ]] || export MANPATH="$arg:$MANPATH"
     }
@@ -202,8 +183,10 @@ export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 export MANPAGER='less -s -M +Gg'
 
 # homebrew or linuxbrew support
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 add_path "$HOME/.linuxbrew/bin"
 add_path "$HOME/.homebrew/bin"
+add_path "$(brew --prefix)/opt/coreutils/libexec/gnubin"
 command -v brew 2>&1 >/dev/null && eval "brew shellenv" 2>&1 >/dev/null
 
 # add $HOME/.local/bin in to PATH
