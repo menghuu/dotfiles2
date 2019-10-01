@@ -5,11 +5,11 @@
 let g:mapleader=','
 
 
-if get(s:, 'loaded', 0) != 0
-    finish
-else
-    let s:loaded = 1
-endif
+"if get(s:, 'loaded', 0) != 0
+    "finish
+"else
+    "let s:loaded = 1
+"endif
 
 command! -nargs=1 LoadScript exec 'so ~/.vim/<args>'
 

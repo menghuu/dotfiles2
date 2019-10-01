@@ -1,5 +1,8 @@
-alias ls="ls --color=auto"
-alias lls='ls --color=auto'
+#!/usr/bin/env bash
+
+( \ls /usr --color=auto 2>&1 >/dev/null ) && alias ls="ls --color=auto"
+
+alias lls='ls'
 alias l="ls -hl"
 alias ll='ls -lAth'
 alias la='ls -lath'
@@ -24,3 +27,6 @@ alias now='date "+%Y-%m-%d %H:%M:%S"'
 alias untar='tar xvf '
 
 alias ipe='curl ipinfo.io/ip'
+
+alias rm='echo "This is not the command you are looking for."; false'
+command -v trash-put 2>&1 >/dev/null && alias rmi=trash-put

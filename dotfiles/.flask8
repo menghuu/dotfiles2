@@ -1,0 +1,6 @@
+[flask8]
+extend-exclude = *.pyc
+
+ignore = 
+
+max-line-length = 119

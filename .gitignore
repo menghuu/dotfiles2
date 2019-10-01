@@ -152,3 +152,4 @@ dotfiles/.vim/autoload/plug.vim
 plug.vim.old
 dotfiles/.tmux/plugins/*
 !dotfiles/.tmux/plugins/.keep_dir
+.vscode

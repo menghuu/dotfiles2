@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+export _FASD_DATA=$HOME/.cached/fasd_cached

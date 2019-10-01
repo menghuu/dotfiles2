@@ -60,7 +60,7 @@ Plug 'editorconfig/editorconfig-vim'
 
 Plug 'ntpeters/vim-better-whitespace'
 
-Plug 'Yggdroot/indentLine'
+"Plug 'Yggdroot/indentLine'
 
 Plug 'pbrisbin/vim-restore-cursor'
 
@@ -134,9 +134,9 @@ endif
 let g:deoplete#enable_at_startup = 1
 
 " vim-lsp
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'ryanolsonx/vim-lsp-python'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'ryanolsonx/vim-lsp-python'
 let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 "Plug 'lighttiger2505/deoplete-vim-lsp'
 "autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
@@ -193,9 +193,17 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " For conceal markers.
+" 此选项关系到是否隐藏掉某些占位符
+" 0代表着完全显示出来
+" 3代表着无论如何都会被隐藏掉
 if has('conceal')
-  set conceallevel=2 concealcursor=niv
+  set conceallevel=0 concealcursor=""
 endif
+"let g:vim_markdown_conceal = 0
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
+let g:vim_markdown_conceal_code_blocks = 0
+let g:vim_markdown_conceal = 0
+
 "}}}
 " commenter {{{
 Plug 'scrooloose/nerdcommenter'
@@ -214,7 +222,7 @@ Plug 'scrooloose/nerdcommenter'
 " I just want to using its linter and formmat function
 Plug 'w0rp/ale'
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
-let g:pymode_rope_completion = 0
+"let g:pymode_rope_completion = 0
 
 " disable ale completion, using other completion engine
 let g:ale_completion_enabled = 0
@@ -239,7 +247,7 @@ nnoremap <buffer> <silent> <C-w>gd :ALEGoToDefinitionInVSplit<CR>
 "colorscheme {{{
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/seoul256.vim'
-"Plug 'chriskempson/base16-vim'
+Plug 'chriskempson/base16-vim'
 " for dark 233(darkest) ~ 239(lightest)
 " for light 253(darkest) ~ 256(lightest)
 let g:seoul256_background = 233
@@ -315,7 +323,7 @@ noremap <C-j><C-w> :<C-u>Windows<CR>
 let g:fzf_commands_expect = 'space'
 "Plug '~/.vim/customs/fzf-m'
 
-Plug 'Shougo/deol.nvim'
+"Plug 'Shougo/deol.nvim'
 
 " undotreee
 Plug 'mbbill/undotree' | Plug '~/.vim/customs/undotree-m'
@@ -324,7 +332,7 @@ Plug 'mbbill/undotree' | Plug '~/.vim/customs/undotree-m'
 
 Plug 'tmux-plugins/vim-tmux'
 
-Plug 'takac/vim-hardtime'
+"Plug 'takac/vim-hardtime'
 "let g:hardtime_default_on = 1
 
 " vim tmux navigator
@@ -399,8 +407,6 @@ Plug 'WolfgangMehner/bash-support', {'for': 'sh'}
 
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}
 
-Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-
 " vim-textobj {{{
 Plug 'kana/vim-textobj-user'
 " dii delete inter `i`ndent
@@ -431,3 +437,4 @@ Plug 'cespare/vim-toml'
 call plug#end()
 
 colo seoul256
+"colo onedark

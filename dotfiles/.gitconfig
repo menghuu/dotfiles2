@@ -1,0 +1,6 @@
+[user]
+	email = me@meng.hu
+	name = hu meng
+[core]
+	autocrlf = input
+	safecrlf = true

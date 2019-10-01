@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 #INSHELL=$(sh -c 'ps -p $$ -o ppid=' | xargs ps -o cmd= -p
-
 INSHELL="$0"
 
 case $INSHELL in
@@ -67,10 +66,31 @@ function hm_source() {
     for exclude_suffix in "$(echo ${exclude_suffixes})"; do
       if [[ ! $(basename "${file_path}") =~ ${exclude_suffix} ]] \
         && ! elementIn "$(basename ${file_path})" ${exclude_names[@]} ; then
-        . "${file_path}"
+        source "${file_path}"
       fi
     done
   done
+}
+
+add_path() {
+  [[ $# -lt 1 ]] && return 1
+  for arg in $*
+  do
+    [[ -d $arg ]] && {
+      [[ $PATH =~ $arg ]] || export PATH="$arg:$PATH"
+    }
+  done
+}
+
+add_manpath() {
+  [[ $# -lt 1 ]] && return 1
+  for arg in $*
+  do
+    [[ -d $arg ]] && {
+      [[ $MANPATH =~ $arg ]] || export MANPATH="$arg:$MANPATH"
+    }
+  done
+
 }
 
 # common setting
@@ -125,16 +145,20 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 export MANPAGER='less -s -M +Gg'
 
-# in mac, you should install the `brew` and `brew instlal coreutils` to replace the default utils in mac
-# and configure this to totally replace the old utils in mac
+# homebrew or linuxbrew support
+add_path "$HOME/.linuxbrew/bin"
+add_path "$HOME/.homebrew/bin"
+command -v brew 2>&1 >/dev/null && eval "brew shellenv" 2>&1 >/dev/null
+# 在mac中, 使用brew 安装 coreutils 来替代默认的shell工具, 比如能带来更好的ls色彩之类的
 case "$(uname)" in
   *Darwin*)
-    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    # [[ PATH =~ '/usr/local/opt/coreutils/libexec/gnubin' ]] || export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    add_path '/usr/local/opt/coreutils/linuxexec/gnubin'
     # bash completion
     [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
-    [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion || {
+    [[ -f /usr/local/etc/bash_completion ]] && . /usr/local/etc/bash_completion || {
     # if not found in /usr/local/etc, try the brew --prefix location
-    [ -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ] && \
+    [[ -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]] && \
         . $(brew --prefix)/etc/bash_completion.d/git-completion.bash
       }
     ;;
@@ -142,7 +166,16 @@ case "$(uname)" in
     ;;
 esac
 
-# environment variables
+# add $HOME/.local/bin in to PATH
+add_path "$HOME/.local/bin"
+add_manpath "$HOME/.local/share/man"
+
+# 设置好一点的LC, 无论哪一种, 都尽量支持UTF-8
+{
+  locale -a | grep -i 'zh_CN.UTF8' 2>&1 >/dev/null && export LC_ALL=zh_CN.UTF8
+} || {
+  locale -a | grep -i 'en_US.UTF8' 2>&1 >/dev/null && export LC_ALL=en_US.UTF8
+} || export LC_ALL=C
 
 # fzf ctrl-T command
 export FZF_CTRL_T_COMMAND='find'
@@ -159,14 +192,6 @@ if (command -v fasd 1 >&2 2 > /dev/null) ; then
   alias zz='fasd_cd -d -i' # cd with interactive selection
 fi
 
-# add $HOME/.local/bin in to PATH
-if ! [[ $PATH =~ $HOME/.local/bin ]]; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
-if ! [[ $MANPATH =~ $HOME/.local/share/man ]]; then
-  export MANPATH="$HOME/.local/share/man:$MANPATH"
-fi
-
 # should set the x11 forward before this
 # ssh this pc by `ssh -lY username@ip`
 if [ -n "$SSH_CLIENT" ]; then
@@ -176,49 +201,43 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 # z.lua
-# need lua to using z.lua
 (command -v lua > /dev/null) && \
-if [ "$INSHELL" = 'bash' -o "$INSHELL" = 'zsh' ]; then
+if [[ "$INSHELL" =~ 'bash' ]] || [[ "$INSHELL" =~ 'zsh' ]]; then
   eval "$(lua ~/apps/z.lua/z.lua --init $INSHELL)"
 else
   eval "$(lua ~/apps/z.lua/z.lua --init posix)"
 fi
 
 # pyenv support
-[[ "$PATH" =~ $HOME/.pyenv/bin ]] || export PATH="$HOME/.pyenv/bin:$PATH"
-
+add_path "$HOME/.pyenv/bin"
 if ! [[ "$PATH" =~ $HOME/.pyenv/shims ]]; then
   (command -v pyenv > /dev/null) && \
-    eval "$(pyenv init -)" #&& eval "$(pyenv virtualenv-init -)"
+    eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
 fi
 
 # ruby
+add_path "$HOME/.rbenv/bin"
 
-[[ "$PATH" =~ $HOME/.rbenv/bin ]] || export PATH="$HOME/.rbenv/bin:$PATH"
-
-# linuxbrew
-if [[ -e $HOME/.linuxbrew/bin ]]; then
-  [[ "$PATH" =~ $HOME/.linuxbrew/bin ]] || eval $($HOME/.linuxbrew/bin/brew shellenv)
-  #[[ "$PATH" =~ $HOME/.linuxbrew/bin ]] || export PATH="$HOME/.linuxbrew/bin:$PATH"
-fi
-
-# homebrew
-if [[ -e $HOME/.homebrew/bin ]]; then
-  [[ "$PATH" =~ $HOME/.homebrew/bin ]] || eval $($HOME/.homebrew/bin/brew shellenv)
- #[[ "$PATH" =~ $HOME/.homebrew/bin ]] || export PATH="$HOME/.homebrew/bin:$PATH"
-fi
-
-# anaconda
-if [[ -e $HOME/anaconda3/bin ]]; then
-  [[ "$PATH" =~ $HOME/anaconda3/bin ]] || export PATH="$HOME/anaconda3/bin:$PATH"
-fi
-
-if [[ -e $HOME/miniconda3/bin ]]; then
-  [[ "$PATH" =~ $HOME/miniconda3/bin ]] || export PATH="$HOME/miniconda3/bin:$PATH"
-fi
+# anaconda and miniconda support
+add_path "$HOME/anaconda3/bin"
+add_path "$HOME/miniconda3/bin"
+command -v conda 2>&1 >/dev/null && {
+  conda_bin_path=`command -v conda`
+  ( [[ $conda_bin_path =~ 'miniconda' ]] || [[ $conda_bin_path =~ 'anaconda' ]] ) \
+  && { 
+   conda_root_path=$(dirname $(dirname $conda_bin_path)) 
+   conda_ld_path=${conda_root_path}/lib
+   [[ $LD_LIBRARY_PATH =~ ${conda_ld_path} ]] || export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${conda_ld_path}"
+   conda_include_path=$conda_root_path/include
+   [[ $C_INCLUDE_PATH =~ ${conda_include_path} ]] || export C_INCLUDE_PATH="$C_INCLUDE_PATH:$conda_include_path"
+   [[ $CPLUS_INCLUDE_PATH =~ ${conda_include_path} ]] || export CPLUS_INCLUDE_PATH="$LD_LIBRARY_PATH:${conda_include_path}"
+  }
+}
 
 # direnv
 (command -v direnv > /dev/null) && eval "$(direnv hook $INSHELL)"
+
+export HISTFILE=$HOME/.cached/.bash_history
 
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
