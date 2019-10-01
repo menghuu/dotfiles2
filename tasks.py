@@ -266,7 +266,7 @@ def pipx_install(package_names: Union[List[str], str], checks: Union[List, str, 
                 # failed_msg += f'{package_name}: {res.stdout} + \n + {res.stderr} + \n'
     if len(failed) != 0:
         raise BrewInstallPackageFailed(
-            package_names='/'.join(failed), other_msg=failed_msg)
+            package_names='/'.join(failed), msg_or_res=failed_msg)
 
 
 def link_with_backup(old, new=None, backup_dir=backup_dir, after_backup_dir_prefix=''):
