@@ -48,13 +48,13 @@ class InstallPackageFailed(Exception):
         self.msg_str += '=' * 78 + '>' + '\n'
 
         super(InstallPackageFailed, self).__init__(
-            msg_or_res=f'尝试通过{self.by}安装{self.package_names}, 但是没有成功. 可能有用的信息有:\n{self.msg_str}')
+            f'尝试通过{self.by}安装{self.package_names}, 但是没有成功. 可能有用的信息有:\n{self.msg_str}')
 
 
 class BrewInstallPackageFailed(InstallPackageFailed):
     def __init__(self, package_names: Union[List[str], str] = 'unknow', msg_or_res: Union[str, Result, List[Result]] = ''):
         super(BrewInstallPackageFailed, self).__init__(
-            package_names=package_names, msg_or_res=self.msg_str, by='brew')
+            package_names=package_names, msg_or_res=msg_or_res, by='brew')
 
 
 # configure here
@@ -283,19 +283,16 @@ def link_with_backup(old, new=None, backup_dir=backup_dir, after_backup_dir_pref
     if osp.exists(new):
         backup_file_path = osp.join(backup_dir, osp.basename(new))
         shutil.move(new, backup_file_path)
-    print('will link')
     os.symlink(old, new)
 
 def link_files_in_dir(c, target_dir='~',  dir='dotfiles/', ignore_dir=True, after_backup_dir_prefix=''):
     dir = osp.abspath(dir)
     target_dir = osp.abspath(osp.expanduser(target_dir))
-    print(f'target dir is {target_dir}')
     for file_or_dir_name in os.listdir(dir):
         file_or_dir_path = osp.join(dir, file_or_dir_name)
         if osp.isdir(file_or_dir_path) and ignore_dir:
             continue
         file_path = file_or_dir_path
-        print('will link with backup')
         link_with_backup(file_path,
                             osp.join(target_dir, osp.basename(file_path)),
                             after_backup_dir_prefix=after_backup_dir_prefix)
@@ -576,7 +573,7 @@ def install_common_packages(c):
     brew_install('tmux', checks='tmux', forces=False)
     brew_install('neovim', checks='nvim')
     brew_install('trash-cli', checks='trash-put')
-    pipx_install('ranger')
+    pipx_install('ranger-fm')
     install_fpp(c)
     install_direnv(c)
     install_fzf(c)
@@ -591,6 +588,7 @@ def install(c):
     if system_type == 'darwin':
         logger.info('install extra macos packages')
         brew_install('coreutils')
+        brew_install('bash-completion')
         pass
 
 

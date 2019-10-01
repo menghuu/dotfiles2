@@ -9,6 +9,9 @@ case $INSHELL in
     ;;
   *bash*)
     INSHELL='bash'
+    #so_dir $(brew --prefix)/etc/bash_completion.d
+    #so_dir /etc/bash_completion.d
+    so "$(brew --prefix)/etc/profile.d/bash_completion.sh" 
     ;;
   sh)
     INSHELL='sh'
@@ -21,10 +24,63 @@ case $INSHELL in
     ;;
 esac
 
+case "$(uname)" in
+  *Darwin*)
+    add_path '/usr/local/opt/coreutils/libexec/gnubin'
+    ;;
+  *)
+    ;;
+esac
+
+function getshell() {
+    local shell="`ps -p $$ | tail -1 | awk '{print $4}'`"
+
+    shells_array=(
+    # It is important that the shells are listed by the decrease of their length name.
+        pdksh
+        bash dash mksh
+        zsh ksh
+        sh
+    )
+
+    local suited=false
+    for i in ${shells_array[*]}; do
+        if ! [ -z `echo $shell | grep $i` ] && ! $suited; then
+            shell=$i
+            suited=true
+        fi
+    done
+    echo $shell
+}
+
 this_script_dir="${HOME}/.config/shell/"
 
 #echo shell is ${INSHELL}
 #echo dir is ${this_script_dir}
+
+# function
+function so(){
+  if [ ! -n "$*" ]; then
+    source ~/.${INSHELL}rc
+  else
+    for rc_file in $@ ; do
+      if [[ -e $rc_file ]]; then
+	source $rc_file
+      fi
+    done
+  fi
+}
+
+function so_dir() {
+  [ $# -lt 1 ] && return 1
+  for _dir in $@; do
+    if [[ -d $_dir ]]; then
+      for rc_file in $_dir/*; do
+	. $rc_file
+      done
+    fi
+  done
+}
 
 function get_exclude_suffixes() {
   local sh_suffix=$1
@@ -72,7 +128,7 @@ function hm_source() {
   done
 }
 
-add_path() {
+function add_path() {
   [[ $# -lt 1 ]] && return 1
   for arg in $*
   do
@@ -82,7 +138,7 @@ add_path() {
   done
 }
 
-add_manpath() {
+function add_manpath() {
   [[ $# -lt 1 ]] && return 1
   for arg in $*
   do
@@ -149,22 +205,6 @@ export MANPAGER='less -s -M +Gg'
 add_path "$HOME/.linuxbrew/bin"
 add_path "$HOME/.homebrew/bin"
 command -v brew 2>&1 >/dev/null && eval "brew shellenv" 2>&1 >/dev/null
-# 在mac中, 使用brew 安装 coreutils 来替代默认的shell工具, 比如能带来更好的ls色彩之类的
-case "$(uname)" in
-  *Darwin*)
-    # [[ PATH =~ '/usr/local/opt/coreutils/libexec/gnubin' ]] || export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    add_path '/usr/local/opt/coreutils/linuxexec/gnubin'
-    # bash completion
-    [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
-    [[ -f /usr/local/etc/bash_completion ]] && . /usr/local/etc/bash_completion || {
-    # if not found in /usr/local/etc, try the brew --prefix location
-    [[ -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]] && \
-        . $(brew --prefix)/etc/bash_completion.d/git-completion.bash
-      }
-    ;;
-  *)
-    ;;
-esac
 
 # add $HOME/.local/bin in to PATH
 add_path "$HOME/.local/bin"
@@ -174,7 +214,11 @@ add_manpath "$HOME/.local/share/man"
 {
   locale -a | grep -i 'zh_CN.UTF8' 2>&1 >/dev/null && export LC_ALL=zh_CN.UTF8
 } || {
+  locale -a | grep -i 'zh_CN.UTF-8' 2>&1 >/dev/null && export LC_ALL=zh_CN.UTF-8
+} || {
   locale -a | grep -i 'en_US.UTF8' 2>&1 >/dev/null && export LC_ALL=en_US.UTF8
+} || {
+  locale -a | grep -i 'en_US.UTF-8' 2>&1 >/dev/null && export LC_ALL=en_US.UTF-8
 } || export LC_ALL=C
 
 # fzf ctrl-T command
@@ -190,14 +234,6 @@ if (command -v fasd 1 >&2 2 > /dev/null) ; then
   alias sf='fasd -sif'     # interactive file selection
   alias z='fasd_cd -d'     # cd, same functionality as j in autojump
   alias zz='fasd_cd -d -i' # cd with interactive selection
-fi
-
-# should set the x11 forward before this
-# ssh this pc by `ssh -lY username@ip`
-if [ -n "$SSH_CLIENT" ]; then
-  if [ -z "${DISPLAY}" ]; then
-    export DISPLAY='localhost:10'
-  fi
 fi
 
 # z.lua
@@ -243,6 +279,15 @@ export HISTFILE=$HOME/.cached/.bash_history
 export EDITOR=vim
 export VISUAL=vim
 
+# should set the x11 forward before this
+# ssh this pc by `ssh -lY username@ip`
+if [ -n "$SSH_CLIENT" ]; then
+  if [ -z "${DISPLAY}" ]; then
+    export DISPLAY='localhost:10'
+  fi
+fi
+
+
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
 
@@ -252,11 +297,3 @@ hm_source "${this_script_dir}/bindings" "${INSHELL}"
 # functions
 hm_source "${this_script_dir}/functions" "${INSHELL}"
 
-# function
-so(){
-  if [ ! -n "$*" ]; then
-    source ~/.${INSHELL}rc
-  else
-    source $@
-  fi
-}
