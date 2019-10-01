@@ -558,9 +558,12 @@ def install_vimcdoc(c, force=False):
 # @task(aliases=['common_deps'], pre=[update_brew])
 @task(aliases=['common_deps'], pre=[install_conda, update_brew, install_pipx])
 def install_common_deps(c):
+    logger.info('install common deps')
     # 此函数用来安装所有平台上的通用依赖, 主要包括conda, brew, git之类的工具
+    logger.info('install git curl wget by brew')
     brew_install(['git', 'curl', 'wget'])
     # 这些都是常见的库和工具, 不过编译安装速度非常慢, 谨慎运行
+    logger.info('install common library by brew')
     brew_install(['bzip2', 'libffi', 'libxml2', 'libxmlsec1',
                   'openssl', 'readline', 'sqlite', 'xz', 'zlib'], verbose=True)
     # 这个可能在`pyenv install 3.7.4`时有用
@@ -569,6 +572,7 @@ def install_common_deps(c):
 
 @task(aliases=['common_packages'], pre=[install_common_deps])
 def install_common_packages(c):
+    logger.info('install common packages')
     brew_install('tmux', checks='tmux', forces=False)
     brew_install('neovim', checks='nvim')
     brew_install('trash-cli', checks='trash-put')
@@ -585,6 +589,7 @@ def install_common_packages(c):
 @task(pre=[install_common_deps, install_common_packages])
 def install(c):
     if system_type == 'darwin':
+        logger.info('install extra macos packages')
         brew_install('coreutils')
         pass
 

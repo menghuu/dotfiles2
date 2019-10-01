@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-command -v inv 2>&1 >/dev/null || python3 -m pip install pyinvoke
+command -v inv 2>&1 >/dev/null || python3 -m pip install invoke
 
 # install dep packages
 # python3 -m invoke install-dep
