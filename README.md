@@ -1,43 +1,36 @@
 # mongoose's dotfiles 
 
-- keep it simple, make sure I need them all
-- installed by bash
-- using subtree in git not submodule
-- Bash/zsh supports
-- Linux/Mac/windows supports
+- testing on linux and mac
+- testing on bash
+- testing on python3.7
+- include `install package` and `link dotfile`
+
+## quick start
+
+- `git clone https://github.com/menghuu/dotfiles2.git`
+- `cd dotfiles2`
+- `python3 -m pip install pyinvoke`
+- `python3 -m invoke install && python3 -m invoke link`
+
+### details
+
+see [examples](./scripts/examples.bash)
 
 # dependences
 
-- Bash, using to install the configurations
-- coreutils, in mac, should installed by `brew install coreutils` and add `PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH` to `.bashrc` or `.zshrc`
-- Lua, dependented by z.lua
-- wget/curl，to install other tools
-- tmux，todo: shuld Mac installed it?
-- vim/nvim，need python3 support
+- `pyinvoke`
 
 # features
+
+## packages
+
+install packages by `brew`/`pipx`/`conda`
 
 ## vim/nvim
 
 - manager vim plugins with vim-plug
 
-## zsh/bash
+## zsh/bash(zsh not testing well)
 
 - aliases
 - key bindings
-
-## quick start
-
-## pre step
-
-- install `lua` to use `z.lua`
-- install `neovim` to have the full feature of vim config
-- install `wget` and `curl` to download some thrid part software
-- options: `tmux`
-
-## install
-
-- `git clone https://github.com/menghuu/dotfiles2.git`
-- `cd dotfiles2`
-- `chmod u+x install`
-- `./install`

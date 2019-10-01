@@ -226,11 +226,13 @@ command -v conda 2>&1 >/dev/null && {
   ( [[ $conda_bin_path =~ 'miniconda' ]] || [[ $conda_bin_path =~ 'anaconda' ]] ) \
   && { 
    conda_root_path=$(dirname $(dirname $conda_bin_path)) 
-   conda_ld_path=${conda_root_path}/lib
-   [[ $LD_LIBRARY_PATH =~ ${conda_ld_path} ]] || export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${conda_ld_path}"
-   conda_include_path=$conda_root_path/include
-   [[ $C_INCLUDE_PATH =~ ${conda_include_path} ]] || export C_INCLUDE_PATH="$C_INCLUDE_PATH:$conda_include_path"
-   [[ $CPLUS_INCLUDE_PATH =~ ${conda_include_path} ]] || export CPLUS_INCLUDE_PATH="$LD_LIBRARY_PATH:${conda_include_path}"
+    # maybe it should done with direnv ?
+    # sometimes, we need ld path work but sometimes, we avoid it
+  #  conda_ld_path=${conda_root_path}/lib
+  #  [[ $LD_LIBRARY_PATH =~ ${conda_ld_path} ]] || export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${conda_ld_path}"
+  #  conda_include_path=$conda_root_path/include
+  #  [[ $C_INCLUDE_PATH =~ ${conda_include_path} ]] || export C_INCLUDE_PATH="$C_INCLUDE_PATH:$conda_include_path"
+  #  [[ $CPLUS_INCLUDE_PATH =~ ${conda_include_path} ]] || export CPLUS_INCLUDE_PATH="$LD_LIBRARY_PATH:${conda_include_path}"
   }
 }
 
@@ -238,6 +240,8 @@ command -v conda 2>&1 >/dev/null && {
 (command -v direnv > /dev/null) && eval "$(direnv hook $INSHELL)"
 
 export HISTFILE=$HOME/.cached/.bash_history
+export EDITOR=vim
+export VISUAL=vim
 
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
