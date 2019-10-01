@@ -6,9 +6,9 @@ shell工具拷贝自: https://github.com/toastdriven/shell
 1. 尽可能少的依赖, 目前需要依赖python3.5以上, 不想再依赖除了python自带包以外的东西
 2. 尽可能的简单, 追求完美太累了
 """
+import logging
 from invoke import task, Context, Result, run
 import tempfile
-import logging
 import os
 import os.path as osp
 import sys
@@ -219,7 +219,7 @@ def brew_install(package_names: Union[List[str], str], checks: Union[List[str], 
                 # failed_msg += f'{package_name}: {res.stdout} + \n + {res.stderr} + \n'
     if len(failed) != 0:
         raise BrewInstallPackageFailed(
-            package_names='/'.join(failed), other_msg=failed_msg)
+            package_names='/'.join(failed), msg_or_res=failed_msg)
 
 
 def conda_install(package_names: Union[List[str], str], checks: Union[List, str, bool] = True, forces: [bool, List[bool]] = False):
@@ -243,7 +243,7 @@ def conda_install(package_names: Union[List[str], str], checks: Union[List, str,
                 # failed_msg += f'{package_name}: {res.stdout} + \n + {res.stderr} + \n'
     if len(failed) != 0:
         raise BrewInstallPackageFailed(
-            package_names='/'.join(failed), other_msg=failed_msg)
+            package_names='/'.join(failed), msg_or_res=failed_msg)
 
 
 def pipx_install(package_names: Union[List[str], str], checks: Union[List, str, bool] = True, forces: [bool, List[bool]] = False):
