@@ -1,25 +1,32 @@
-#!/usr/bin/env python3
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim:fenc=utf-8
+#
+# Copyright © 2019 m <m@meng.hu>
+#
+# Distributed under terms of the MIT license.
+
+"""
+
+"""
 import logging
-from invoke import task, Context, Result, run
 import tempfile
 import os
 import os.path as osp
 import sys
 import platform
-import shlex
-import subprocess
 import shutil
 import datetime
 try:
     from typing import Union, List
 except ImportError:
     print('不支持typing类型标注')
+from invoke import task, Context, Result, run
 
 logger = logging.getLogger(__name__)
 logger.setLevel('DEBUG')
 
 # 当使用了pty=True的时候, 这个时候stdout和stderr是分离不开的
-
 
 class InstallPackageFailed(Exception):
     def __init__(self, package_names: Union[List[str], str] = 'unknow', by='unknow', msg_or_res: Union[str, Result, List[Result]] = ''):
@@ -27,7 +34,7 @@ class InstallPackageFailed(Exception):
         assert isinstance(package_names, (list, str))
 
         self.package_names = package_names
-
+        ]
         self.by = by
         self.msg_str = '<' + '=' * 78 + '\n'
         assert isinstance(msg_or_res, (str, List, Result))
@@ -101,7 +108,9 @@ def make_sure_dir_exist(dir_path):
     raise RuntimeError('cannot make sure the dir is exist')
 
 
-def command_is_exist(command_name):
+def command_is_exist(command_name, c=None):
+    if c:
+        run = c.run
     res = run(f'command -v {command_name} 2>&1 >/dev/null', warn=True)
     return res
 
@@ -417,7 +426,7 @@ def update_brew(c):
 
 @task
 def install_fpp(c, force=False):
-    if command_is_exist('fpp') and not force:
+    if command_is_exist('fpp', c) and not force:
         return
     make_sure_dir_exist(osp.expanduser('~/.app'))
     make_sure_dir_exist(osp.expanduser('~/.local/bin'))
@@ -504,16 +513,35 @@ def install_yarn(c, force=False):
 
 @task
 def install_pyenv(c, force=False):
-    if command_is_exist('pyenv') and force:
+    if command_is_exist('pyenv', c) and force:
         return
     else:
-        res = c.run('curl https://pyenv.run | bash', pyt=True, warn=True)
+        res = c.run('curl https://pyenv.run | bash', pty=True, warn=True)
         if res:
             pass
         else:
             raise InstallPackageFailed(
                 package_names='pyenv', by='bash', msg_or_res=res)
 
+@task(pre=[install_pyenv])
+def install_py_dev(c, force=False):
+    """
+    install python3.7.4 virtual-env dev3 for installing pynvim pylsp
+    """
+    if c.run('pyenv virtualenv-prefix dev3 2>&1 >/dev/null', warn=True, pty=True) and force:
+        return
+    else:
+        res = c.run('eval "$(pyenv init -)" '
+                    '&& eval "$(pyenv virtualenv-init -)" '
+                    "&& pyenv install 3.7.4 "
+                    '&& pyenv virtualenv 3.7.4 dev3 '
+                    '&& $(pyenv virtualenv-prefix dev3)/bin/pip install --user '
+                    'pynvim python-language-server[all]', pty=True, warn=True)
+        if res:
+            pass
+        else:
+            raise InstallPackageFailed(
+                package_names='pyenv', by='bash', msg_or_res=res)
 
 @task
 def install_tpm(c, force=False):
@@ -527,7 +555,6 @@ def install_tpm(c, force=False):
     if not res:
         raise InstallPackageFailed(
             package_names='tpm', by='git', msg_or_res=res)
-
 
 @task
 def install_vimcdoc(c, force=False):

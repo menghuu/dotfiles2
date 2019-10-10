@@ -36,6 +36,8 @@ if !has('nvim')
   set viminfo+=!
   set wildmenu
 endif
+
+" 将tab键看作空格的数量
 set softtabstop=2
 set shiftwidth=2
 filetype on
@@ -43,8 +45,6 @@ syntax on
 set number relativenumber
 set ignorecase
 set smartcase
-
-
 set viminfo+=n~/.cached/viminfo
 
 if has('smartindent')
@@ -163,18 +163,33 @@ set wildmode=longest,list,full
 augroup generalSetting
     autocmd!
     " vimrc文件修改之后自动加载, windows
-    " autocmd! bufwritepost _vimrc source %
+    autocmd! bufwritepost _vimrc source %
     " vimrc文件修改之后自动加载, linux
     autocmd! bufwritepost .vimrc source %
     " 离开插入模式后自动关闭预览窗口
-    "autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+    autocmd InsertLeave * if pumvisible() == 0|pclose|endif
     " command-line window
     "autocmd CmdwinEnter * nnoremap <buffer> <CR> <CR>
 
     " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
-    "autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
     "autocmd TabLeave * let g:last_active_tab = tabpagenr()
 augroup END
 
-let g:python3_host_prog='/usr/bin/python3'
+let has_machine_specific_file = 1
+if empty(glob('~/.vim/machine_specific.vim'))
+  let has_machine_specific_file = 0
+  silent! exec "!cp ~/.vim/default_machine_specific.vim ~/.vim/machine_specific.vim"
+endif
+source ~/.vim/default_machine_specific.vim
+source ~/.vim/machine_specific.vim
+
+if has_machine_specific_file == 0
+  exec "e ~/.config/nvim/machine_specific.vim"
+endif
+
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
+
+" let g:python3_host_prog='/usr/bin/python3'

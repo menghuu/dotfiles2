@@ -227,13 +227,6 @@ else
   eval "$(lua ~/apps/z.lua/z.lua --init posix)"
 fi
 
-# pyenv support
-add_path "$HOME/.pyenv/bin"
-if ! [[ "$PATH" =~ $HOME/.pyenv/shims ]]; then
-  (command -v pyenv > /dev/null) && \
-    eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
-fi
-
 # ruby
 add_path "$HOME/.rbenv/bin"
 
@@ -254,6 +247,14 @@ command -v conda 2>&1 >/dev/null && {
   #  [[ $CPLUS_INCLUDE_PATH =~ ${conda_include_path} ]] || export CPLUS_INCLUDE_PATH="$LD_LIBRARY_PATH:${conda_include_path}"
   }
 }
+
+# pyenv support
+add_path "$HOME/.pyenv/bin"
+if ! [[ "$PATH" =~ $HOME/.pyenv/shims ]]; then
+  (command -v pyenv > /dev/null) && \
+    eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
+fi
+
 
 # direnv
 (command -v direnv > /dev/null) && eval "$(direnv hook $INSHELL)"

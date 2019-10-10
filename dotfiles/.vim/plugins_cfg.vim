@@ -1,6 +1,17 @@
+" vim:ft=vim:sts=2:sw=2:ts=2
+" Author: m
+" Mail: m@meng.hu
+" Date: 2019-10-07
+" Description: configure plugins
+
 command! -nargs=1 LoadCustom 'so ~/.vim/custom/<args>'
 
 call plug#begin('~/.vim/vim-plugged')
+
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 " move line down and up
 Plug 'matze/vim-move' "| Plug '~/.vim/customs/vim-move-m'
@@ -18,7 +29,7 @@ vmap <A-Up> <Plug>MoveBlocUp
 Plug 'aperezdc/vim-template'
 
 " general syntax support
-"Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 
 " simplified clipboard functionality for vim
 " Plug 'svermeulen/vim-easyclip'
@@ -41,20 +52,20 @@ endif
 
 "Plug 'romainl/vim-qf'
 
-Plug 'pbrisbin/vim-mkdir'
 "usage:
 ":e this/does/not/exist/file.txt
 ":w
 "will auto mkdir this/does/not/exist
+Plug 'pbrisbin/vim-mkdir'
 
 " 如果使用oni的话，建议将其内置的括号补全功能去除掉,否则两个会冲突
+" <M-e> 能将元素从括号中extract出来
+" <M-]> 将(|)['hello', 'world'] -> (['hello', 'world'])
+" <M-n> 跳到下一个闭合的括号处
+" 上述说的都是在插入模式下, 还有其他的做法, 不过感觉有些奇怪
 Plug 'jiangmiao/auto-pairs'
 
 "Plug 'will133/vim-dirdiff'
-
-" Plug 'hecal3/vim-leader-guide'
-
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 Plug 'editorconfig/editorconfig-vim'
 

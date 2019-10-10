@@ -2,21 +2,16 @@
 " Author: mongoose
 " Description: my vim config, some come from lemon0910
 
-let g:mapleader=','
-
 "if get(s:, 'loaded', 0) != 0
     "finish
 "else
     "let s:loaded = 1
 "endif
 
-command! -nargs=1 LoadScript exec 'so ~/.vim/<args>'
-
 " 载入基本设置
-LoadScript init-basic.vim
+exec 'so ~/.vim/basic_cfg.vim'
 
 " 载入插件设置
-LoadScript init-plugins.vim
+exec 'so ~/.vim/plugins_cfg.vim'
 
-
-"vim:sts=2:sw=2:ts=2
+" vim:sts=2:sw=2:ts=2
