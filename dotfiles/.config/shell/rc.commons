@@ -1,6 +1,25 @@
 #!/usr/bin/env bash
 this_script_dir="${HOME}/.config/shell/"
 
+function add_path() {
+  [[ $# -lt 1 ]] && return 1
+  for arg in $*; do
+    [[ -d $arg ]] && {
+      [[ $PATH =~ $arg ]] || export PATH="$arg:$PATH"
+    }
+  done
+}
+
+function add_manpath() {
+  [[ $# -lt 1 ]] && return 1
+  for arg in $*; do
+    [[ -d $arg ]] && {
+      [[ $MANPATH =~ $arg ]] || export MANPATH="$arg:$MANPATH"
+    }
+  done
+
+}
+
 function getshell() {
     local shell="`ps -p $$ | tail -1 | awk '{print $4}'`"
 
@@ -21,6 +40,14 @@ function getshell() {
     done
     echo $shell
 }
+
+# homebrew or linuxbrew support
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+add_path "$HOME/.linuxbrew/bin"
+add_path "$HOME/.homebrew/bin"
+add_path "$(brew --prefix)/opt/coreutils/libexec/gnubin"
+command -v brew 2>&1 >/dev/null && eval "brew shellenv" 2>&1 >/dev/null
+
 #INSHELL=$(sh -c 'ps -p $$ -o ppid=' | xargs ps -o cmd= -p
 INSHELL="$(getshell)"
 
@@ -42,7 +69,7 @@ case $(getshell) in
     ;;
   *bash*)
     INSHELL='bash'
-    so "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+    command -v brew 2>&1 >/dev/null && so "$(brew --prefix)/etc/profile.d/bash_completion.sh"
     ;;
   sh)
     INSHELL='sh'
@@ -111,25 +138,6 @@ function hm_source() {
   done
 }
 
-function add_path() {
-  [[ $# -lt 1 ]] && return 1
-  for arg in $*; do
-    [[ -d $arg ]] && {
-      [[ $PATH =~ $arg ]] || export PATH="$arg:$PATH"
-    }
-  done
-}
-
-function add_manpath() {
-  [[ $# -lt 1 ]] && return 1
-  for arg in $*; do
-    [[ -d $arg ]] && {
-      [[ $MANPATH =~ $arg ]] || export MANPATH="$arg:$MANPATH"
-    }
-  done
-
-}
-
 # common setting
 
 # (little)color prompt
@@ -182,13 +190,6 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 export MANPAGER='less -s -M +Gg'
 
-# homebrew or linuxbrew support
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
-add_path "$HOME/.linuxbrew/bin"
-add_path "$HOME/.homebrew/bin"
-add_path "$(brew --prefix)/opt/coreutils/libexec/gnubin"
-command -v brew 2>&1 >/dev/null && eval "brew shellenv" 2>&1 >/dev/null
-
 # add $HOME/.local/bin in to PATH
 add_path "$HOME/.local/bin"
 add_manpath "$HOME/.local/share/man"
@@ -228,7 +229,7 @@ else
 fi
 
 # ruby
-add_path "$HOME/.rbenv/bin"
+#add_path "$HOME/.rbenv/bin"
 
 # anaconda and miniconda support
 add_path "$HOME/anaconda3/bin"
@@ -236,7 +237,7 @@ add_path "$HOME/miniconda3/bin"
 command -v conda 2>&1 >/dev/null && {
   conda_bin_path=`command -v conda`
   ( [[ $conda_bin_path =~ 'miniconda' ]] || [[ $conda_bin_path =~ 'anaconda' ]] ) \
-  && { 
+  && {
    conda_root_path=$(dirname $(dirname $conda_bin_path)) 
     # maybe it should done with direnv ?
     # sometimes, we need ld path work but sometimes, we avoid it
