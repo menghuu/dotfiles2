@@ -11,20 +11,19 @@
 - `cd dotfiles2`
 - `python3 -m pip install invoke`
 - `python3 -m invoke install link patch`
+- now, I want to remove invoke depedences and will using pure shell script to install packages
+- and using stow to manage dotfile link
 
 ### details
 
 see [examples](./scripts/examples.bash)
+see [setup.example.sh](./setup.example.sh) to install packages instead of using pyinvoke to install packages
 
 # dependences
 
-- `invoke`
+- `invoke`, I will remove this depedence later
 
 # features
-
-## packages
-
-install packages by `brew`/`pipx`/`conda`
 
 ## vim/nvim
 
