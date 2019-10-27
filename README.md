@@ -8,12 +8,12 @@
 
 - `git clone https://github.com/menghuu/dotfiles2.git`
 - `cd dotfiles2`
-- see [setup.example.sh](./setup.example.sh) to find which parts(packages) you want to install
+- see [setup.examples.sh](./setup.examples.sh) to find which parts(packages) you want to install
 - `stow -t $HOME dotfiles -v` to link 
 
 ### details
 
-see [examples](./scripts/examples.bash)
+see [setup.examples.sh](./setup.examples.bash)
 
 # dependences
 
