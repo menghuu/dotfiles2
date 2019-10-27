@@ -85,3 +85,17 @@ direnv_save_path=${HOME}/.local/bin/direnv
 [ -e ./dotfiles/.vim/autoload/plug.vim ] \ 
     || curl -fLo ./dotfiles/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+
+
+# make sure the stow link work better
+# it will make sure the other config in .config will not influce the .config in git repo
+mkdir -p ~/.config
+# actually, if those files are link, it will just remove the link not the origin files/dirs
+# if thoese files exists, stow will link the files under those dir, it is not I wish
+trash-put -rf ~/.config/nvim
+trash-put -rf ~/.config/shell
+trash-put -rf ~/.vim
+trash-put -rf ~/.tmux
+
+stow -t $HOME dotfiles
