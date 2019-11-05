@@ -1,36 +1,29 @@
 # mongoose's dotfiles 
 
-- testing on linux and mac
-- testing on bash
-- testing on python3.7
+- work on linux and mac
+- work on bash
 - include `install package` and `link dotfile`
 
 ## quick start
 
 - `git clone https://github.com/menghuu/dotfiles2.git`
 - `cd dotfiles2`
-- `python3 -m pip install invoke`
-- `python3 -m invoke install link patch`
+- see [setup.examples.sh](./setup.examples.sh) to find which parts(packages) you want to install
+- `stow -t $HOME dotfiles -v` to link 
 
 ### details
 
-see [examples](./scripts/examples.bash)
+see [setup.examples.sh](./setup.examples.bash)
 
 # dependences
 
-- `invoke`
+- `stow` for linking
 
 # features
 
-## packages
-
-install packages by `brew`/`pipx`/`conda`
-
-## vim/nvim
-
-- manager vim plugins with vim-plug
-
-## zsh/bash(zsh not testing well)
-
-- aliases
-- key bindings
+- best tool for best domain instead of better tool for all
+- best start point to manage your dotfiles
+- vim config
+- tmux config
+- shell aliases
+- shell key bindings

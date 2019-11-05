@@ -232,6 +232,7 @@ fi
 #add_path "$HOME/.rbenv/bin"
 
 # anaconda and miniconda support
+# maybe not add anaconda into path, just using pyenv
 add_path "$HOME/anaconda3/bin"
 add_path "$HOME/miniconda3/bin"
 command -v conda 2>&1 >/dev/null && {
