@@ -232,7 +232,13 @@ Plug 'scrooloose/nerdcommenter'
 " I really don't like the other lsp function in this
 " I just want to using its linter and formmat function
 Plug 'w0rp/ale'
-Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+"Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+"let g:pymode = 1
+"let g:pymode_options = 1
+"let g:pymode_options_max_line_length = 119
+"let g:pymode_rope = 1
+"let g:pymode_rope_goto_definition_bind = '<C-c>g'
+"let g:pymode_python='python'
 "let g:pymode_rope_completion = 0
 
 " disable ale completion, using other completion engine

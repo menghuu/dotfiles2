@@ -42,11 +42,20 @@ function getshell() {
 }
 
 # homebrew or linuxbrew support
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 add_path "$HOME/.linuxbrew/bin"
-add_path "$HOME/.homebrew/bin"
-add_path "$(brew --prefix)/opt/coreutils/libexec/gnubin"
-command -v brew 2>&1 >/dev/null && eval "brew shellenv" 2>&1 >/dev/null
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+command -v brew 2>&1 >/dev/null && {
+  eval "brew shellenv" 2>&1 >/dev/null;
+  case $(uname) in
+    *Darwin*)
+      add_path "$(brew --prefix)/opt/coreutils/libexec/gnubin"
+      ;;
+    *)
+      ;;
+  esac
+}
+
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 #INSHELL=$(sh -c 'ps -p $$ -o ppid=' | xargs ps -o cmd= -p
 INSHELL="$(getshell)"
@@ -239,7 +248,7 @@ command -v conda 2>&1 >/dev/null && {
   conda_bin_path=`command -v conda`
   ( [[ $conda_bin_path =~ 'miniconda' ]] || [[ $conda_bin_path =~ 'anaconda' ]] ) \
   && {
-   conda_root_path=$(dirname $(dirname $conda_bin_path)) 
+   conda_root_path=$(dirname $(dirname $conda_bin_path))
     # maybe it should done with direnv ?
     # sometimes, we need ld path work but sometimes, we avoid it
   #  conda_ld_path=${conda_root_path}/lib
