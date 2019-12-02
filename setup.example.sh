@@ -3,26 +3,23 @@
 # should run manually, copy/paste and run some specify sections
 
 # install pyenv
-if `command -v pyenv 2>&1 >/dev/null`; then {
-    curl https://pyenv.run | bash
-    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-} else {
-    pyenv update
-}
-fi
+#if `command -v pyenv 2>&1 >/dev/null`; then {
+    #curl https://pyenv.run | bash
+    #git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+#} else {
+    #pyenv update
+#}
+#fi
 
 
 # create global python env
-pyenv install anaconda3-latest
-pyenv global anaconda3-latest
+#pyenv install anaconda3-latest
+#pyenv global anaconda3-latest
 # using mirror: https://mirrors.tuna.tsinghua.edu.cn/help/anaconda/
 # for neovim
 conda install pynvim -c conda-forge
-# install from default channel
 conda install tensorflow-mkl attrs flask
-# install from pytorch channel
 conda install pytorch -c pytorch ignite torchtext
-# using conda install binary tool
 command -v tmux 2>&1 >/dev/null || conda install tmux -c conda-forge
 
 
@@ -36,7 +33,7 @@ command -v poetry 2>&1 >/dev/null || pipx install poetry
 
 # install brew and using brew install some packages
 command -v brew 2>&1 >/dev/null || {
-    case `uname` in 
+    case `uname` in
         Darwin )
             /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
             HOMEBREW_NO_AUTO_UPDATE=1
@@ -82,7 +79,7 @@ direnv_save_path=${HOME}/.local/bin/direnv
 
 
 # install vim-plug
-[ -e ./dotfiles/.vim/autoload/plug.vim ] \ 
+[ -e ./dotfiles/.vim/autoload/plug.vim ] \
     || curl -fLo ./dotfiles/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
