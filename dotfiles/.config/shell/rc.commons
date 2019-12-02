@@ -244,20 +244,6 @@ fi
 # maybe not add anaconda into path, just using pyenv
 add_path "$HOME/anaconda3/bin"
 add_path "$HOME/miniconda3/bin"
-command -v conda 2>&1 >/dev/null && {
-  conda_bin_path=`command -v conda`
-  ( [[ $conda_bin_path =~ 'miniconda' ]] || [[ $conda_bin_path =~ 'anaconda' ]] ) \
-  && {
-   conda_root_path=$(dirname $(dirname $conda_bin_path))
-    # maybe it should done with direnv ?
-    # sometimes, we need ld path work but sometimes, we avoid it
-  #  conda_ld_path=${conda_root_path}/lib
-  #  [[ $LD_LIBRARY_PATH =~ ${conda_ld_path} ]] || export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${conda_ld_path}"
-  #  conda_include_path=$conda_root_path/include
-  #  [[ $C_INCLUDE_PATH =~ ${conda_include_path} ]] || export C_INCLUDE_PATH="$C_INCLUDE_PATH:$conda_include_path"
-  #  [[ $CPLUS_INCLUDE_PATH =~ ${conda_include_path} ]] || export CPLUS_INCLUDE_PATH="$LD_LIBRARY_PATH:${conda_include_path}"
-  }
-}
 
 # pyenv support
 #add_path "$HOME/.pyenv/bin"
