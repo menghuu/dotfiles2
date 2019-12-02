@@ -271,8 +271,13 @@ fi
 (command -v direnv > /dev/null) && eval "$(direnv hook $INSHELL)"
 
 export HISTFILE=$HOME/.cached/.bash_history
-export EDITOR=vim
-export VISUAL=vim
+if command -v nvim 2>&1 >/dev/null; then
+  export EDITOR=nvim
+  export VISUAL=nvim
+elif command -v vim 2>&1 >/dev/null; then
+  export EDITOR=vim
+  export VISUAL=vim
+fi
 
 # should set the x11 forward before this
 # ssh this pc by `ssh -lY username@ip`
