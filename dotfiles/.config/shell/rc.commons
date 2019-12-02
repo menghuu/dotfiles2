@@ -260,11 +260,11 @@ command -v conda 2>&1 >/dev/null && {
 }
 
 # pyenv support
-add_path "$HOME/.pyenv/bin"
-if ! [[ "$PATH" =~ $HOME/.pyenv/shims ]]; then
-  (command -v pyenv > /dev/null) && \
-    eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
-fi
+#add_path "$HOME/.pyenv/bin"
+#if ! [[ "$PATH" =~ $HOME/.pyenv/shims ]]; then
+  #(command -v pyenv > /dev/null) && \
+    #eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
+#fi
 
 
 # direnv
