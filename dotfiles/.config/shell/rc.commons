@@ -271,6 +271,9 @@ fi
 (command -v direnv > /dev/null) && eval "$(direnv hook $INSHELL)"
 
 export HISTFILE=$HOME/.cached/.bash_history
+# in bash: ctrl-x ctrl-e to run visual
+# editor is basic editor
+# visual is advance editor
 if command -v nvim 2>&1 >/dev/null; then
   export EDITOR=nvim
   export VISUAL=nvim
