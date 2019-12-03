@@ -29,29 +29,31 @@ command -v pipx 2>&1 >/dev/null && pipx ensurepath
 # using pipx install packages
 command -v ranger 2>&1 >/dev/null || pipx install ranger-fm
 command -v poetry 2>&1 >/dev/null || pipx install poetry
+command -v dvc 2>&1 >/dev/null || pipx install dvc
 
 
 # install brew and using brew install some packages
 command -v brew 2>&1 >/dev/null || {
-    case `uname` in
-        Darwin )
-            /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-            HOMEBREW_NO_AUTO_UPDATE=1
-            brew install coreutils
-            brew install bash-completion
-            ;;
-        Linux )
-            conda install ruby
-            sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-            ;;
-    esac
+  case `uname` in
+    Darwin )
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      HOMEBREW_NO_AUTO_UPDATE=1
+      brew install coreutils
+      brew install bash-completion
+      ;;
+    Linux )
+      conda install ruby
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+      ;;
+  esac
 
-    command -v nvim 2>&1 >/dev/null || brew install neovim
-    command -v trash-put 2>&1 >/dev/null || brew install trash-cli
-    command -v wget 2>&1 >/dev/null || brew install wget
-    command -v curl 2>&1 >/dev/null || brew install curl
-    command -v fzf 2>&1 >/dev/null || brew install fzf
-    command -v stow 2>&1 >/dev/null || brew install stow
+  command -v nvim 2>&1 >/dev/null || brew install neovim
+  command -v trash-put 2>&1 >/dev/null || brew install trash-cli
+  command -v wget 2>&1 >/dev/null || brew install wget
+  command -v curl 2>&1 >/dev/null || brew install curl
+  command -v fzf 2>&1 >/dev/null || brew install fzf
+  command -v stow 2>&1 >/dev/null || brew install stow
+  command -v npm 2>&1 >/dev/null || brew install nodejs
 }
 
 # install tpm
@@ -96,3 +98,8 @@ trash-put -rf ~/.vim
 trash-put -rf ~/.tmux
 
 stow -t $HOME dotfiles
+
+python3 -m venv ~/.config/nvim/env
+source ~/.config/nvim/env/bin/activate
+pip install pynvim jedi psutil setproctitle yapf
+deactivate

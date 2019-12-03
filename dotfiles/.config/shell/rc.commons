@@ -43,12 +43,12 @@ function getshell() {
 
 # homebrew or linuxbrew support
 add_path "$HOME/.linuxbrew/bin"
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 command -v brew 2>&1 >/dev/null && {
   eval "brew shellenv" 2>&1 >/dev/null;
   case $(uname) in
     *Darwin*)
       add_path "$(brew --prefix)/opt/coreutils/libexec/gnubin"
+      export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
       ;;
     *)
       ;;

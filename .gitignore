@@ -180,5 +180,6 @@ dotfiles/.vim/autoload/plug.vim
 .DS_Store
 plug.vim.old
 dotfiles/.tmux/plugins/*
+dotfiles/.vim/env
 !dotfiles/.tmux/plugins/.keep_dir
 .vscode
