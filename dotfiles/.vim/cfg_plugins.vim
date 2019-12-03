@@ -4,12 +4,9 @@
 " Date: 2019-10-07
 " Description: configure plugins
 
-command! -nargs=1 LoadCustom 'so ~/.vim/custom/<args>'
-
 call plug#begin('~/.vim/vim-plugged')
 
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
@@ -128,27 +125,27 @@ let g:rainbow_active=1
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/nerdtree-m'
 "Plug 'ryanoasis/vim-devicons'
 
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-else
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-  Plug 'Shougo/deoplete.nvim'
-endif
-if (has('win32') || has('win64'))
-  Plug 'tbodt/deoplete-tabnine', { 'do': 'powershell.exe .\install.ps1'}
-else
-  Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
-endif
-let g:deoplete#enable_at_startup = 1
+"if has('nvim')
+  "Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+"else
+  "Plug 'roxma/nvim-yarp'
+  "Plug 'roxma/vim-hug-neovim-rpc'
+  "Plug 'Shougo/deoplete.nvim'
+"endif
+"if (has('win32') || has('win64'))
+  "Plug 'tbodt/deoplete-tabnine', { 'do': 'powershell.exe .\install.ps1'}
+"else
+  "Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+"endif
+"let g:deoplete#enable_at_startup = 1
 
 " vim-lsp
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
 "Plug 'ryanolsonx/vim-lsp-python'
-let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+"let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 "Plug 'lighttiger2505/deoplete-vim-lsp'
 "autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
 
@@ -174,7 +171,6 @@ let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
 "nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 "autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
-"Plug '~/.vim/customs/deoplete-m'
 
 "Plug 'zchee/deoplete-jedi', {'for': ['python']}
 
@@ -265,6 +261,7 @@ nnoremap <buffer> <silent> <C-w>gd :ALEGoToDefinitionInVSplit<CR>
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'chriskempson/base16-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 " for dark 233(darkest) ~ 239(lightest)
 " for light 253(darkest) ~ 256(lightest)
 let g:seoul256_background = 233
@@ -453,5 +450,6 @@ Plug 'cespare/vim-toml'
 
 call plug#end()
 
-colo seoul256
+"colo seoul256
+colo dracula
 "colo onedark
