@@ -29,7 +29,7 @@ command -v pipx 2>&1 >/dev/null && pipx ensurepath
 # using pipx install packages
 command -v ranger 2>&1 >/dev/null || pipx install ranger-fm
 command -v poetry 2>&1 >/dev/null || pipx install poetry
-command -v dvc 2>&1 >/dev/null || pipx install dvc
+command -v dvc 2>&1 >/dev/null || pipx install dvc[all]
 
 
 # install brew and using brew install some packages
