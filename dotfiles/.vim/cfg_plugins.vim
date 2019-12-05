@@ -11,7 +11,8 @@ nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 " move line down and up
-Plug 'matze/vim-move' "| Plug '~/.vim/customs/vim-move-m'
+Plug 'matze/vim-move'
+" vim-move settings {{{
 let g:move_map_keys = 0
 let g:move_auto_indent = 0
 map <A-]> <Plug>MoveLineDown
@@ -22,6 +23,7 @@ map <A-Down> <Plug>MoveLineDown
 map <A-Up> <Plug>MoveLineUp
 vmap <A-Down> <Plug>MoveBlocDown
 vmap <A-Up> <Plug>MoveBlocUp
+" }}}
 
 Plug 'aperezdc/vim-template'
 
@@ -36,14 +38,13 @@ Plug 'sheerun/vim-polyglot'
 
 "Plug 'vheon/vim-cursormode'
 
-
-if !exists("g:gui_oni")
-  Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' "| Plug '~/.vim/customs/vim-airline-m'
-  let g:airline#extensions#obsession#enabled = 1
-  let g:airline#extensions#obsession#indicator_text = '$'
-  let g:airline#extensions#cursormode#enabled = 1
-  let g:airline_theme="tomorrow"
-endif
+Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+" vim-airline settings {{{
+let g:airline#extensions#obsession#enabled = 1
+let g:airline#extensions#obsession#indicator_text = '$'
+let g:airline#extensions#cursormode#enabled = 1
+let g:airline_theme="tomorrow"
+" }}}
 
 " Plug 'itchyny/lightline.vim'
 
@@ -125,7 +126,10 @@ let g:rainbow_active=1
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } | Plug '~/.vim/customs/nerdtree-m'
 "Plug 'ryanoasis/vim-devicons'
 
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" coc.nvim settings {{{
+" }}}
+"Plug 'neoclide/coc-python', {'for': ['python']}
 
 "if has('nvim')
   "Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
@@ -141,50 +145,27 @@ Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 "endif
 "let g:deoplete#enable_at_startup = 1
 
-" vim-lsp
-"Plug 'prabirshrestha/async.vim'
-"Plug 'prabirshrestha/vim-lsp'
-"Plug 'ryanolsonx/vim-lsp-python'
-"let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
-"Plug 'lighttiger2505/deoplete-vim-lsp'
-"autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
-
-" LanguageClient-neovim
-"Plug 'autozimu/LanguageClient-neovim', {
-    "\ 'branch': 'next',
-    "\ 'do': 'bash install.sh',
-    "\ }
-"let g:LanguageClient_diagnosticsEnable = 0
-"let g:LanguageClient_serverCommands = {}
-"let g:LanguageClient_serverCommands['python'] = ["pyls"]
-"function LC_maps()
-  "if has_key(g:LanguageClient_serverCommands, &filetype)
-    "nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
-    ""nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_definition()<CR>
-    ""nnoremap <buffer> <silent> gd :ALEGoToDefinitionInVSplit <CR>
-    ""nnoremap <buffer> <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-  "endif
-"endfunction
-
-"autocmd FileType * call LC_maps()
-
-"nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
-"autocmd Filetype python noremap <buffer><C-]> :<C-U>call lsp#ui#vim#definition()<CR>
-
 "Plug 'zchee/deoplete-jedi', {'for': ['python']}
 
 "Plug 'davidhalter/jedi-vim', {'for': ['python'] }
+Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+" python-mode settings {{{
+let g:pymode = 1
+let g:pymode_options = 1
+let g:pymode_trim_whitespaces = 1
+let g:pymode_rope_completion = 1
+let g:pymode_rope_complete_on_dot = 1
+let g:pymode_rope = 1
+let g:pymode_python = 'python3'
+" }}}
 
 " vim 的deoplete补全
 "Plug 'Shougo/neco-vim'
 
-" snippets {{{
 "Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
-" Plugin key-mappings.
+" neosnippet settings {{{
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -198,6 +179,7 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 " \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" }}}
 
 " For conceal markers.
 " 此选项关系到是否隐藏掉某些占位符
@@ -206,17 +188,13 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=0 concealcursor=""
 endif
-"let g:vim_markdown_conceal = 0
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_conceal = 0
 
-"}}}
-" commenter {{{
 Plug 'scrooloose/nerdcommenter'
 " Plug 'tpope/vim-commentary'
 " Plug 'tomtom/tcomment_vim'
-"}}}
 
 " better numbertoggle {{{
 "Plug 'jeffkreeftmeijer/vim-numbertoggle'
@@ -224,22 +202,11 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'kennykaye/vim-relativity'
 "}}}
 
-" linter ale using lsp
-" I really don't like the other lsp function in this
-" I just want to using its linter and formmat function
 Plug 'w0rp/ale'
-"Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
-"let g:pymode = 1
-"let g:pymode_options = 1
-"let g:pymode_options_max_line_length = 119
-"let g:pymode_rope = 1
-"let g:pymode_rope_goto_definition_bind = '<C-c>g'
-"let g:pymode_python='python'
-"let g:pymode_rope_completion = 0
-
+" ale settings {{{
 " disable ale completion, using other completion engine
 let g:ale_completion_enabled = 0
-let ale_linters = {}
+"let ale_linters = {}
 "let g:ale_linters['python'] = ['pyls']
 
 "let g:ale_fixers = {
@@ -256,8 +223,8 @@ let ale_linters = {}
 
 nnoremap <buffer> <silent> gd :ALEGoToDefinition <CR>
 nnoremap <buffer> <silent> <C-w>gd :ALEGoToDefinitionInVSplit<CR>
+" }}}
 
-"colorscheme {{{
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'chriskempson/base16-vim'
@@ -265,11 +232,9 @@ Plug 'dracula/vim', { 'as': 'dracula' }
 " for dark 233(darkest) ~ 239(lightest)
 " for light 253(darkest) ~ 256(lightest)
 let g:seoul256_background = 233
-"}}}
 
 " lengthmatters: highlight the flooding art of an overly long line
 Plug 'whatyouhide/vim-lengthmatters'
-
 let g:lengthmatters_on_by_default=1
 let g:lengthmatters_excluded = [
     \'fzf',
@@ -289,29 +254,60 @@ let g:lengthmatters_excluded = [
     \'markdown'
     \]
 
-" easymotion, <leader><leader>f like function
+" easymotion, <leader><leader>f like function{{{
 Plug 'easymotion/vim-easymotion'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug '~/.vim/customs/vim-easymotion-m'
-
+"}}}
 " vim-anzu: display search status
 "Plug 'osyo-manga/vim-anzu' | Plug '~/.vim/customs/vim-anzu-m'
 
-" fancy fold texts
 Plug 'Konfekt/FoldText' | Plug '~/.vim/customs/FoldText-m'
+" fancy fold texts{{{
+" setting foldtext {{{
+let g:vimsyn_folding='af'
+let g:tex_fold_enabled=1
+let g:xml_syntax_folding = 1
+let g:clojure_fold = 1
+let ruby_fold = 1
+let perl_fold = 1
+let perl_fold_blocks = 1
+"}}}
+" zr: 打开一层折叠
+nnoremap <silent> zr zr:<c-u>setlocal foldlevel?<CR>
+" zm: 关闭一些折叠
+nnoremap <silent> zm zm:<c-u>setlocal foldlevel?<CR>
+
+nnoremap <silent> zR zR:<c-u>setlocal foldlevel?<CR>
+nnoremap <silent> zM zM:<c-u>setlocal foldlevel?<CR>
+
+" Change Option Folds
+nnoremap zi  :<c-u>call <SID>ToggleFoldcolumn(1)<CR>
+nnoremap coz :<c-u>call <SID>ToggleFoldcolumn(0)<CR>
+nmap     cof coz
+
+function! s:ToggleFoldcolumn(fold)
+  if &foldcolumn
+    let w:foldcolumn = &foldcolumn
+    silent setlocal foldcolumn=0
+    if a:fold | silent setlocal nofoldenable | endif
+  else
+      if exists('w:foldcolumn') && (w:foldcolumn!=0)
+        silent let &l:foldcolumn=w:foldcolumn
+      else
+        silent setlocal foldcolumn=4
+      endif
+      if a:fold | silent setlocal foldenable | endif
+  endif
+  setlocal foldcolumn?
+endfunction
+""}}}
 
 " fzf
-" fzf 在windows下其实并不是特别好，但是它的功能最全面，也不需要怎么配置，适合我这样的懒人
-" 在windows下不能使用HelpTag,使用denite来替代，说实话，不太会用
 Plug 'junegunn/fzf.vim'
-if (!has("win32") && !has("win64"))
-    Plug '~/.fzf', {'do': './install --all' }
-else
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf'}
-    Plug 'Shougo/denite.nvim'
-    command! -nargs=* HelpTags exec 'Denite help <args>'
-endif
+Plug '~/.fzf', {'do': './install --all' }
+" fzf setting {{{
 noremap <C-p> :<C-u>Commands<CR>
 noremap <C-f> :<C-u>FZF<CR>
 
@@ -334,9 +330,10 @@ noremap <C-j><C-l> :<C-u>Lines<CR>
 
 noremap <C-j>w :<C-u>Windows<CR>
 noremap <C-j><C-w> :<C-u>Windows<CR>
-let g:fzf_commands_expect = 'space'
-"Plug '~/.vim/customs/fzf-m'
+"let g:fzf_commands_expect = 'alt-enter, ctrl-x'
 
+
+" }}}
 "Plug 'Shougo/deol.nvim'
 
 " undotreee
@@ -350,7 +347,44 @@ Plug 'tmux-plugins/vim-tmux'
 "let g:hardtime_default_on = 1
 
 " vim tmux navigator
-Plug 'christoomey/vim-tmux-navigator' | Plug '~/.vim/customs/vim-tmux-navigator-m'
+Plug 'christoomey/vim-tmux-navigator'
+" vim tmux navigator setting {{{
+let g:tmux_navigator_no_mappings = 1
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+    tnoremap <silent> <A-h> <C-\><C-N>:TmuxNavigateLeft<cr>
+    tnoremap <silent> <A-j> <C-\><C-N>:TmuxNavigateDown<cr>
+    tnoremap <silent> <A-k> <C-\><C-N>:TmuxNavigateUp<cr>
+    tnoremap <silent> <A-l> <C-\><C-N>:TmuxNavigateRight<cr>
+    tnoremap <silent> <A-=> <C-\><C-N>:TmuxNavigatePrevious<cr>
+else
+    " 这下能在应该在的模式下使用alt键了
+    " 包括insert模式
+    for i in range(65,90) + range(97,122)
+	let c = nr2char(i)
+	exec "map \e".c." <M-".c.">"
+	exec "map! \e".c." <M-".c.">"
+
+	exec "imap \e".c." <M-".c.">"
+	exec "imap \e".c." <M-".c.">"
+    endfor
+endif
+noremap <silent> <A-h> <C-\><C-N>:TmuxNavigateLeft<cr>
+noremap <silent> <A-j> <C-\><C-N>:TmuxNavigateDown<cr>
+noremap <silent> <A-k> <C-\><C-N>:TmuxNavigateUp<cr>
+noremap <silent> <A-l> <C-\><C-N>:TmuxNavigateRight<cr>
+noremap <silent> <A-=> <C-\><C-N>:TmuxNavigatePrevious<cr>
+
+" 先从insert模式进入normal模式再进行移动
+" 否则移回来的时候忘记了，又按键导致出现不想要的字符
+inoremap <silent> <A-h> <C-\><C-N>:TmuxNavigateLeft<cr>
+inoremap <silent> <A-j> <C-\><C-N>:TmuxNavigateDown<cr>
+inoremap <silent> <A-k> <C-\><C-N>:TmuxNavigateUp<cr>
+inoremap <silent> <A-l> <C-\><C-N>:TmuxNavigateRight<cr>
+inoremap <silent> <A-=> <C-\><C-N>:TmuxNavigatePrevious<cr>
+"}}}
+
 " add/del/chagne surround like "/[/]/</>
 " cs]) replace [] to ()
 Plug 'tpope/vim-surround'
@@ -374,6 +408,7 @@ Plug 'tpope/vim-repeat'
 
 "
 Plug 'svermeulen/vim-cutlass'
+" vim-cutlass settings {{{
 nnoremap x d
 xnoremap x d
 nnoremap xx dd
@@ -383,6 +418,7 @@ nnoremap m m
 xnoremap m m
 nnoremap mm mm
 xnoremap M M
+" }}}
 
 Plug 'mhinz/vim-startify'
 
@@ -417,7 +453,8 @@ Plug 'WolfgangMehner/bash-support', {'for': 'sh'}
 "Plug 'vim-python/python-syntax', {'for': 'python'}
 
 " conda support
-"Plug 'cjrh/vim-conda'| Plug '~/.vim/customs/vim-conda-m'
+"Plug 'cjrh/vim-conda'
+let g:conda_startup_msg_suppress = 1
 
 Plug 'tmhedberg/SimpylFold', {'for': 'python'}
 
@@ -450,6 +487,6 @@ Plug 'cespare/vim-toml'
 
 call plug#end()
 
-"colo seoul256
-colo dracula
+colo seoul256
+"colo dracula
 "colo onedark
