@@ -4,3 +4,5 @@
 [core]
 	autocrlf = input
 	safecrlf = true
+[commit]
+	template = /data/humeng/.config/mgit/git-commit-template.txt
