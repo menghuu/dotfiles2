@@ -1,0 +1,7 @@
+{
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.enabled": true,
+  "python.formatting.provider": "yapf",
+  "python.formatting.yapfArgs": ["-i", "--recursive", "--style='{based_on_style=facebook', column_limit:79}"]
+}
