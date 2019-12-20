@@ -101,5 +101,5 @@ stow -t $HOME dotfiles
 
 python3 -m venv ~/.config/nvim/env
 source ~/.config/nvim/env/bin/activate
-pip install pynvim jedi psutil setproctitle yapf
+pip install pynvim jedi psutil setproctitle yapf black flake8 flake8-bugbear python-language-server[all]
 deactivate
