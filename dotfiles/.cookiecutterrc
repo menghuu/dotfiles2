@@ -1,0 +1,4 @@
+default_context:
+    full_name: "humeng"
+    email: "m@meng.hu"
+cookiecutters_dir: "~/.cookiecutters/"
