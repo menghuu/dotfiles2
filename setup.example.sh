@@ -54,6 +54,7 @@ command -v brew 2>&1 >/dev/null || {
   command -v fzf 2>&1 >/dev/null || brew install fzf
   command -v stow 2>&1 >/dev/null || brew install stow
   command -v npm 2>&1 >/dev/null || brew install nodejs
+  command -v ctags 2?&1 >/dev/null || brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 }
 
 # install tpm
