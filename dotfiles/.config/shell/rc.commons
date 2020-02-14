@@ -276,6 +276,7 @@ if [ -n "$SSH_CLIENT" ]; then
   fi
 fi
 
+export TMOUT=0
 
 # alias
 hm_source "${this_script_dir}/aliases" "${INSHELL}"
