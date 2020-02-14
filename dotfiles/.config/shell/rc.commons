@@ -246,11 +246,9 @@ add_path "$HOME/anaconda3/bin"
 add_path "$HOME/miniconda3/bin"
 
 # pyenv support
-#add_path "$HOME/.pyenv/bin"
-#if ! [[ "$PATH" =~ $HOME/.pyenv/shims ]]; then
-  #(command -v pyenv > /dev/null) && \
-    #eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)"
-#fi
+export PYENV_ROOT="$HOME/.pyenv"
+add_path "$HOME/.pyenv/bin"
+(command -v pyenv > /dev/null) && eval "$(pyenv init -)" #&& eval "$(pyenv virtualenv-init -)" 2>&1 > /dev/null
 
 
 # direnv
