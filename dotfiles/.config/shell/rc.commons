@@ -253,6 +253,13 @@ add_path "$HOME/miniconda3/bin"
 condash_file_path="$(realpath $(dirname `which conda`)/../etc/profile.d/conda.sh)"
 [ -e $condash_file_path ] && . $condash_file_path && conda activate
 
+# yarn support
+add_path "$HOME/.config/yarn/global/node_modules/.bin"
+add_path "$HOME/.yarn/bin"
+$(which yarn 2>&1 >/dev/null) && {
+  [[ $(yarn config get registry) == 'https://registry.npm.taobao.org/' ]] || yarn config set registry https://registry.npm.taobao.org/ 2>& 1 >/dev/null
+}
+
 # pyenv support
 export PYENV_ROOT="$HOME/.pyenv"
 add_path "$HOME/.pyenv/bin"
