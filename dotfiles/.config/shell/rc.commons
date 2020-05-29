@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# see https://superuser.com/questions/544989/does-tmux-sort-the-path-variable
+if [ -f /etc/profile ]; then
+    PATH=""
+    source /etc/profile
+fi
+
 this_script_dir="${HOME}/.config/shell/"
 
 function add_path() {
@@ -244,6 +250,8 @@ fi
 # maybe not add anaconda into path, just using pyenv
 add_path "$HOME/anaconda3/bin"
 add_path "$HOME/miniconda3/bin"
+condash_file_path="$(realpath $(dirname `which conda`)/../etc/profile.d/conda.sh)"
+[ -e $condash_file_path ] && . $condash_file_path && conda activate
 
 # pyenv support
 export PYENV_ROOT="$HOME/.pyenv"
