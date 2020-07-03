@@ -28,8 +28,8 @@ command -v pipx 2>&1 >/dev/null || pip install --user pipx
 command -v pipx 2>&1 >/dev/null && pipx ensurepath
 # using pipx install packages
 command -v ranger 2>&1 >/dev/null || pipx install ranger-fm
-command -v poetry 2>&1 >/dev/null || pipx install poetry
-command -v dvc 2>&1 >/dev/null || pipx install dvc[all]
+#command -v poetry 2>&1 >/dev/null || pipx install poetry
+#command -v dvc 2>&1 >/dev/null || pipx install dvc[all]
 
 
 # install brew and using brew install some packages
@@ -43,7 +43,7 @@ command -v brew 2>&1 >/dev/null || {
       ;;
     Linux )
       conda install ruby
-      sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       ;;
   esac
 
@@ -65,7 +65,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # install direnv (currently support macos and linux amd64)
 direnv_url="https://github.com/direnv/direnv/releases/latest/download/direnv.`uname`-amd64"
 direnv_save_path=${HOME}/.local/bin/direnv
-[ -e ${direnv_save_path} ] || wget $direnv_url -O $direnv_save_path
+[ -e ${direnv_save_path} ] || wget $direnv_url -O $direnv_save_path and chmod u+x $direnv_save_path
 
 
 
@@ -98,7 +98,14 @@ trash-put -rf ~/.config/shell
 trash-put -rf ~/.vim
 trash-put -rf ~/.tmux
 
+git clone https://github.com/skywind3000/z.lua.git ~/apps/z.lua
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/apps/fzf
+
+~/apps/fzf/install --all
+
 stow -t $HOME dotfiles
+
+echo 'source ~/.config/shell/rc.commons' >> ~/.bashrc
 
 python3 -m venv ~/.config/nvim/env
 source ~/.config/nvim/env/bin/activate

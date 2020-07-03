@@ -436,7 +436,7 @@ endfunction
 
 " fzf
 Plug 'junegunn/fzf.vim'
-Plug '~/.fzf', {'do': './install --all' }
+Plug '~/apps/fzf', {'do': './install --all' }
 " fzf setting {{{
 noremap <C-p> :<C-u>Commands<CR>
 noremap <C-f> :<C-u>FZF<CR>
